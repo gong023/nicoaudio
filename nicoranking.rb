@@ -1,48 +1,45 @@
 # -*- encoding: utf-8 -*-
 require 'niconico'
-require 'mongo'
+#require 'mongo'
 require 'pp'
+require 'mysql2'
 
 class NicoRanking
     def initialize
         @nico = Niconico.new('geekmaru@gmail.com', 'koenji81')
         @nico.login
-
-        @mongo = Mongo::Connection.new('localhost', 27017)
+        @mysql = Mysql2::Client.new(
+            :host     => 'localhost',
+            :username => 'root',
+            :password => 'mylocal',
+            :database => 'nicoaudio'
+        )
     end
 
-    def filterRank 
-        check = /歌ってみた|初音ミク|GUMI|巡音ルカ/
-        mongo_db = @mongo.db('nicosound')
+    def set
+        check = /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン/
         all_rank = @nico.ranking("")
-        @ranking = []
         all_rank.each do |r|
             if check =~ r.title
-                @ranking.push("#{r.id}" => "#{r.title}")
-                data = ["#{r.id}" => ["id" => "#{r.id}","title" => "#{r.title}","ctime" => "#{Time.now}"]]
-        pp data 
-                mongo_db['ranking'].insert(data)
-                mongo_db['ranking'].ensure_index("#{r.id}")
+                title = @mysql.escape(r.title)
+                insert = "INSERT IGNORE INTO daily (video_id, title) VALUES ('#{r.id}', '#{title}')" 
+                @mysql.query(insert)
+                pp "finished / #{r.id}:#{r.title}"
             end
         end
     end
 
-    def insert
-        mongo_db = @mongo.db('nicosound')
-        pp mongo_db['ranking'].find()
-    end
-
-    def getFlv
-        return nil if @ranking.nil?
-        @ranking.each do |id, title|
-            $stdout = open("open.flv", "w")
-            puts @nico.video("#{id}").get_video
-            $stdout.flush
-            break
+    def get 
+        ago = 1
+        select = "SELECT * FROM daily WHERE ctime > (NOW() - INTERVAL #{ago} DAY )"
+        @mysql.query(select).each do |row|
+            video = @nico.video("#{row["video_id"]}")
+            open("./video/#{row["title"]}.mp4", "w"){|f| f.write video.get_video}
+            sleep 120
         end
     end
 end
 
 nico = NicoRanking.new
-nico.filterRank
+nico.get
 p 'ok'
