@@ -35,11 +35,16 @@ class NicoRanking
         @mysql.query(select).each do |row|
             video = @nico.video("#{row["video_id"]}")
             open("./video/#{row["title"]}.mp4", "w"){|f| f.write video.get_video}
-            sleep 120
+            sleep 120 #感覚開けないと弾かれる
         end
     end
 end
 
+exit() unless $*[0] == '--type'
 nico = NicoRanking.new
-nico.get
+if $*[1] == 'set'
+    nico.set
+else
+    nico.get
+end
 p 'ok'
