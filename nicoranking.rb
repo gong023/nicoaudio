@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
-require 'niconico'
 #require 'mongo'
-require 'pp'
+require 'niconico'
 require 'mysql2'
+require 'pp'
+require 'date'
+require 'fileutils'
 
 class NicoRanking
     def initialize
@@ -31,18 +33,21 @@ class NicoRanking
 
     def get 
         ago = 1
+        today = Date::today.to_s
+        FileUtils.mkdir_p("./video/#{today}")
         select = "SELECT * FROM daily WHERE ctime > (NOW() - INTERVAL #{ago} DAY )"
         @mysql.query(select).each do |row|
             video = @nico.video("#{row["video_id"]}")
-            open("./video/#{row["title"]}.mp4", "w"){|f| f.write video.get_video}
-            sleep 120 #感覚開けないと弾かれる
+            open("./video/#{today}/#{row["title"]}.mp4", "w"){|f| f.write video.get_video}
+            sleep 120 #時間間隔開けないとニコ動から弾かれるようす
         end
     end
 end
 
 exit() unless $*[0] == '--type'
 nico = NicoRanking.new
-if $*[1] == 'set'
+type = $*[1]
+if type == 'set'
     nico.set
 else
     nico.get
