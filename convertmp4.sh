@@ -3,7 +3,7 @@ ORIGIN=${pwd}
 TYPE=$1
 TODAY=$(date '+%Y-%m-%d') 
 WORKSPACE=/root/scripts/nicoaudio/video/$TYPE/$TODAY
-#mkdir -p $WORKSPACE
+
 cd $WORKSPACE
 touch audioname.txt 
 find $WORKSPACE/*.mp4 >> audioname.txt 
