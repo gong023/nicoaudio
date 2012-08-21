@@ -6,29 +6,32 @@ require 'pp'
 require 'date'
 require 'fileutils'
 
+require './nicosecret.rb'
+
 class NicoRanking
     def initialize category
-        @nico = Niconico.new('geekmaru@gmail.com', 'koenji81')
+        secret_st = NicoSecret.new
+        @nico = Niconico.new(secret_st.login_mail, secret_st.login_pass)
         @nico.login
         @mysql = Mysql2::Client.new(
-            :host     => 'localhost',
-            :username => 'root',
-            :password => 'mylocal',
+            :host     => secret_st.mysql_host,
+            :username => secret_st.mysql_user,
+            :password => secret_st.mysql_pass,
             :database => 'nicoaudio'
         )
-        @st = getStatus category
+        @run_st = initRunSetting category
     end
 
     def set
-        check = @st[:regrep] 
-        @st[:category] = "" if @st[:category].nil?
-        all_rank = @nico.ranking(@st[:category])
-        all_rank.each do |r|
-            if check =~ r.title
-                title = @mysql.escape(r.title)
-                insert = "INSERT IGNORE INTO #{@st[:table]} (video_id, title) VALUES ('#{r.id}', '#{title}')" 
+        check = @run_st[:regrep] 
+        @run_st[:category] = "" if @run_st[:category].nil?
+        all_rank = @nico.ranking(@run_st[:category])
+        all_rank.each do |rank|
+            if check =~ rank.title
+                title = @mysql.escape(rank.title)
+                insert = "INSERT IGNORE INTO #{@run_st[:table]} (video_id, title) VALUES ('#{rank.id}', '#{title}')" 
                 @mysql.query(insert)
-                pp "finished / #{r.id}:#{r.title}"
+                pp "finished / #{rank.id}:#{rank.title}"
             end
         end
     end
@@ -36,36 +39,36 @@ class NicoRanking
     def get 
         ago = 1
         today = Date::today.to_s
-        FileUtils.mkdir_p("./video/#{@st[:dir]}/#{today}")
-        select = "SELECT * FROM #{@st[:table]} WHERE ctime > (NOW() - INTERVAL #{ago} DAY )"
+        FileUtils.mkdir_p("./video/#{@run_st[:dir]}/#{today}")
+        select = "SELECT * FROM #{@run_st[:table]} WHERE ctime > (NOW() - INTERVAL #{ago} DAY )"
         @mysql.query(select).each do |row|
             begin
                 video = @nico.video("#{row["video_id"]}")
-                open("./video/#{@st[:dir]}/#{today}/#{row["title"]}.mp4", "w"){|f| f.write video.get_video}
+                open("./video/#{@run_st[:dir]}/#{today}/#{row["title"]}.mp4", "w"){|f| f.write video.get_video}
             rescue
                 next 
             end
             #時間間隔開けないとニコ動から弾かれるようす
-            sleep 120 
+            sleep 20
         end
     end
 
-    def getStatus category
-        status_map = {
+    def initRunSetting category
+        run_st = {
             'all'   => {
                 :category => "",
-                :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン/,
+                :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ/,
                 :dir      => 'all',
                 :table    => 'daily'
             },
             'music' => {
                 :category => 'g_ent2',
-                :regrep   => //,
+                :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ|演奏/,
                 :dir      => 'music',
                 :table    => 'daily_music'
             }
         }
-        status_map[category]
+        run_st[category]
     end
 end
 
