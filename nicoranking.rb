@@ -5,6 +5,8 @@ require 'mysql2'
 require 'pp'
 require 'date'
 require 'fileutils'
+require 'logger'
+require 'benchmark'
 
 require './nicosecret.rb'
 
@@ -75,10 +77,10 @@ exit() unless $*[0] == '--type'
 exit() unless $*[2] == '--category'
 type = $*[1]
 category = $*[3]
+logger = Logger.new('./log/benchmark.log', 'weekly')
 nico = NicoRanking.new(category)
-if type == 'set'
-    nico.set
-else
-    nico.get
-end
-p 'ok'
+benchmark =  Benchmark::measure {
+    type == 'set' ? nico.set : nico.get
+}
+logger.debug(benchmark)
+pp 'ok'
