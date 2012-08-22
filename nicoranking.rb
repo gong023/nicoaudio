@@ -77,10 +77,10 @@ exit() unless $*[0] == '--type'
 exit() unless $*[2] == '--category'
 type = $*[1]
 category = $*[3]
-logger = Logger.new('./log/benchmark.log', 'weekly')
+logger = Logger.new("./log/#{type}/benchmark.log", 'weekly')
 nico = NicoRanking.new(category)
 benchmark =  Benchmark::measure {
     type == 'set' ? nico.set : nico.get
 }
-logger.debug(benchmark)
+logger.debug("#{type} /#{benchmark}")
 pp 'ok'
