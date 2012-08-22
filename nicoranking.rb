@@ -10,13 +10,12 @@ require './nicosecret.rb'
 
 class NicoRanking
     def initialize category
-        secret_st = NicoSecret.new
-        @nico = Niconico.new(secret_st.login_mail, secret_st.login_pass)
+        @nico = Niconico.new(LOGIN_MAIL, LOGIN_PASS)
         @nico.login
         @mysql = Mysql2::Client.new(
-            :host     => secret_st.mysql_host,
-            :username => secret_st.mysql_user,
-            :password => secret_st.mysql_pass,
+            :host     => MYSQL_HOST,
+            :username => MYSQL_USER,
+            :password => MYSQL_PASS,
             :database => 'nicoaudio'
         )
         @run_st = initRunSetting category
