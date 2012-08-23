@@ -1,17 +1,25 @@
-#***これは何  
+#これは何  
 * nicoranking.rb -> ニコニコ動画のランキングから動画をDLします
 * convertmp4.sh  -> DLしたmp4をmp3に変換します 
 
-#***準備するもの
-##1.nicosecret.rb 
+#準備するもの
+*1.nicosecret.rb *
 パスワードなどを記述したrubyファイルをnicoranking.rbと同じディレクトリに置いてください
->"#ニコニコ動画のアカウント
+>"
+#ニコニコ動画のアカウント
+
 LOGIN_MAIL = 'youremail@email.com'
+
 LOGIN_PASS = 'your_password'
+
 #MySQLを使うのでその設定
+
 MYSQL_HOST = 'localhost'
+
 MYSQL_USER = 'root'
+
 MYSQL_PASS = 'mysql_passwd'"
+
 ##2.logディレクトリ
 スクリプトのベンチマークをlogにとるのでディレクトリを予め用意しておいてください  
 こんなかんじで
@@ -41,7 +49,7 @@ CREATE TABLE `daily` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 "
 
-#***オプション説明
+#オプション説明
 * nicoranking.rb
     * --type setでニコ動のランキング「歌ってみた」等の単語を含む動画を見つけてDBに入れる
     * --type getでDBから直近一日の動画を選んでmp4でダウンロードする
