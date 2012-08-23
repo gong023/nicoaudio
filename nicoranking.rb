@@ -38,20 +38,26 @@ class NicoRanking
     end
 
     def get 
-        ago = 1
         today = Date::today.to_s
         FileUtils.mkdir_p("./video/#{@run_st[:dir]}/#{today}")
+        ago = 1
+        threads = []
+
         select = "SELECT * FROM #{@run_st[:table]} WHERE ctime > (NOW() - INTERVAL #{ago} DAY )"
         @mysql.query(select).each do |row|
             begin
+              threads << Thread.new(row) do |thread|
                 video = @nico.video("#{row["video_id"]}")
                 open("./video/#{@run_st[:dir]}/#{today}/#{row["title"]}.mp4", "w"){|f| f.write video.get_video}
+              end
             rescue
                 next 
             end
             #時間間隔開けないとニコ動から弾かれるようす
             sleep 20
         end
+
+        threads.each {|t| t.join}
     end
 
     def initRunSetting category
@@ -82,5 +88,5 @@ nico = NicoRanking.new(category)
 benchmark =  Benchmark::measure {
     type == 'set' ? nico.set : nico.get
 }
-logger.debug("#{type} /#{benchmark}")
+logger.debug("#{type} / #{category} /#{benchmark}")
 pp 'ok'
