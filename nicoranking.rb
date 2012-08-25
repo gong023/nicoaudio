@@ -1,3 +1,4 @@
+#!/usr/local/bin/ruby
 # -*- encoding: utf-8 -*-
 #require 'mongo'
 require 'niconico'
