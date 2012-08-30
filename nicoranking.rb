@@ -8,6 +8,7 @@ require 'date'
 require 'fileutils'
 require 'logger'
 require 'benchmark'
+require 'twitter'
 
 require './nicosecret.rb'
 
@@ -52,6 +53,7 @@ class NicoRanking
                 open("./video/#{@run_st[:dir]}/#{today}/#{row["title"]}.mp4", "w"){|f| f.write video.get_video}
               end
             rescue
+                Logger.new("./log/fail.log", 'weekly').debug("#{today}/#{row["title"]}")
                 next 
             end
             #時間間隔開けないとニコ動から弾かれるようす
@@ -67,7 +69,7 @@ class NicoRanking
                 :category => "",
                 :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ/,
                 :dir      => 'all',
-                :table    => 'daily'
+                :table    => 'daily_music'
             },
             'music' => {
                 :category => 'g_ent2',
@@ -80,14 +82,32 @@ class NicoRanking
     end
 end
 
+class NicoTweet
+  def initialize
+    Twitter.configure do |config|
+      config.consumer_key       = CONSUMER_KEY
+      config.consumer_secret    = CONSUMER_SECRET
+      config.oauth_token        = ACCESS_TOKEN
+      config.oauth_token_secret = ACCESS_TOKEN_SECRET
+    end
+  end
+
+  def sendDM txt
+    Twitter.direct_message_create(DM_SCREEN_NAME, txt)
+  end
+end
+
 exit() unless $*[0] == '--type'
 exit() unless $*[2] == '--category'
 type = $*[1]
 category = $*[3]
+twitter = NicoTweet.new
+twitter.sendDM " started /type:#{type}/category:#{category}/#{Date::today.to_s}" if type == 'get'
 logger = Logger.new("./log/#{type}/benchmark.log", 'weekly')
 nico = NicoRanking.new(category)
 benchmark =  Benchmark::measure {
-    type == 'set' ? nico.set : nico.get
+    type == 'get' ? nico.get : nico.set
 }
+twitter.sendDM "finished /type:#{type}/category:#{category}/#{benchmark}/#{Date::today.to_s}"
 logger.debug("#{type} / #{category} /#{benchmark}")
 pp 'ok'
