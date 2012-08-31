@@ -6,6 +6,6 @@
 #使い方
 ***
 
-1. ruby nicoranking.rb --type set --category all  
-1. ruby nicoranking.rb --type get --category all  
+1. ./nicofacade.rb --type set --category all  
+1. ./nicofacade.rb --type get --category all  
 1. convertmp4.sh all
