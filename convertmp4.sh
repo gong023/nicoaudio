@@ -1,7 +1,7 @@
 #!/bin/bash
 ORIGIN=${pwd}
 TYPE=$1
-TODAY=$(date '+%Y-%m-%d') 
+TODAY=$(date '+%Y-%m-%d')
 WORKSPACE=/root/scripts/nicoaudio/video/$TYPE/$TODAY
 
 cd $WORKSPACE
