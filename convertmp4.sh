@@ -12,7 +12,6 @@ chmod 777 $WORKSPACE/*.mp4
 MP3=".mp3"
 while read line
 do
-    echo "$line$MP3"
     ffmpeg -i "$line" -ab 128 "$line$MP3" < /dev/null
 done <$WORKSPACE/audioname.txt 
 
