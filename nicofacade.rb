@@ -8,7 +8,6 @@ exit() unless $*[2] == '--category'
 type = $*[1]
 category = $*[3]
 twitter = NicoTweet.new
-#twitter.sendDM(" started /type:#{type}/category:#{category}/#{Date::today.to_s}") if type == 'get'
 logger = Logger.new("./log/#{type}/benchmark.log", 'weekly')
 nico = NicoRanking.new(category)
 benchmark =  Benchmark::measure {
