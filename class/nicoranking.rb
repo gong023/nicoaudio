@@ -3,15 +3,9 @@ require "#{Dir::pwd}/class/nicobase.rb"
 
 class NicoRanking < NicoBase
     def initialize category
-        @nico = Niconico.new(LOGIN_MAIL, LOGIN_PASS)
-        @nico.login
-        @mysql = Mysql2::Client.new(
-            :host     => MYSQL_HOST,
-            :username => MYSQL_USER,
-            :password => MYSQL_PASS,
-            :database => 'nicoaudio'
-        )
-        @run_st = initRunSetting category
+      initNico
+      initMysql
+      @run_st = initRunSetting category
     end
 
     def set

@@ -2,12 +2,7 @@ require "#{Dir::pwd}/class/nicobase.rb"
 
 class NicoTweet < NicoBase
   def initialize
-    Twitter.configure do |config|
-      config.consumer_key       = CONSUMER_KEY
-      config.consumer_secret    = CONSUMER_SECRET
-      config.oauth_token        = ACCESS_TOKEN
-      config.oauth_token_secret = ACCESS_TOKEN_SECRET
-    end
+    initTwitter
   end
 
   def sendDM txt
