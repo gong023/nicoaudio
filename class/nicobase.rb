@@ -9,6 +9,7 @@ require 'benchmark'
 require 'twitter'
 
 require "#{Dir::pwd}/class/nicosecret.rb"
+require "#{Dir::pwd}/class/nicoquery.rb"
 
 class NicoBase
 

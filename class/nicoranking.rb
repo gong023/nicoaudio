@@ -2,6 +2,8 @@
 require "#{Dir::pwd}/class/nicobase.rb"
 
 class NicoRanking < NicoBase
+  include NicoQuery
+
   def initialize category
     initNico
     initMysql
@@ -15,20 +17,20 @@ class NicoRanking < NicoBase
     all_rank.each do |rank|
       if check =~ rank.title
         title = @mysql.escape(rank.title)
-        insert = "INSERT IGNORE INTO #{@run_st[:table]} (video_id, title) VALUES ('#{rank.id}', '#{title}')" 
-        @mysql.query(insert)
+        @mysql.query(create_daily(@run_st[:table], rank.id, title))
         pp "finished / #{rank.id}:#{rank.title}"
       end
     end
   end
 
   def get 
-    today = Date::today.to_s
-    FileUtils.mkdir_p("./video/#{@run_st[:dir]}/#{today}")
     ago = 1
+    to_date   = Date::today
+    from_date = to_date - ago 
+    FileUtils.mkdir_p("./video/#{@run_st[:dir]}/#{to_date}")
     threads = []
 
-    select = "SELECT * FROM #{@run_st[:table]} WHERE ctime > (NOW() - INTERVAL #{ago} DAY )"
+    select = find_by_interval(@run_st[:table], from_date.to_s, to_date.to_s)
     @mysql.query(select).each do |row|
       begin
         threads << Thread.new(row) do |thread|
@@ -50,7 +52,7 @@ class NicoRanking < NicoBase
     run_st = {
       'all'   => {
       :category => "",
-      :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ/,
+      :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ|MAD/,
       :dir      => 'all',
       :table    => 'daily_music'
     },
