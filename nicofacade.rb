@@ -1,7 +1,8 @@
 #!/usr/local/bin/ruby
 
-require "#{Dir::pwd}/class/nicoranking.rb"
-require "#{Dir::pwd}/class/nicotweet.rb"
+require "/var/www/scripts/nicoaudio/class/nicobase.rb"
+require "#{SCRIPT_ROOT}/class/nicoranking.rb"
+require "#{SCRIPT_ROOT}/class/nicotweet.rb"
 
 exit() unless $*[0] == '--type'
 exit() unless $*[2] == '--category'
@@ -13,8 +14,9 @@ nico = NicoRanking.new(category)
 benchmark =  Benchmark::measure {
   begin
     type == 'get' ? nico.get : nico.set
-  rescue
-    logger.debug("FAILED!!! #{type} / #{category}")
+  rescue => e
+    pp e
+    logger.debug("FAILED!!! #{type} / #{category} / #{e}")
     twitter.sendDM("FAILED!!! /type:#{type}/category:#{category}/#{Date::today.to_s}")
     exit
   end

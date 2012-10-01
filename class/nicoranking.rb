@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require "#{Dir::pwd}/class/nicobase.rb"
+require "#{SCRIPT_ROOT}/class/nicobase.rb"
 
 class NicoRanking < NicoBase
   include NicoQuery
@@ -25,12 +25,12 @@ class NicoRanking < NicoBase
 
   def get 
     ago = 1
-    to_date   = Date::today
-    from_date = to_date - ago 
-    FileUtils.mkdir_p("./video/#{@run_st[:dir]}/#{to_date}")
+    today     = Date::today
+    from_date = today - ago
+    FileUtils.mkdir_p("./video/#{@run_st[:dir]}/#{today}")
     threads = []
 
-    select = find_by_interval(@run_st[:table], from_date.to_s, to_date.to_s)
+    select = find_by_interval(@run_st[:table], from_date.to_s, today.to_s)
     @mysql.query(select).each do |row|
       begin
         threads << Thread.new(row) do |thread|
@@ -42,7 +42,7 @@ class NicoRanking < NicoBase
         next 
       end
       #時間間隔開けないとニコ動から弾かれるようす
-      sleep 20
+      sleep 2
     end
 
     threads.each {|t| t.join}

@@ -1,4 +1,4 @@
-require "#{Dir::pwd}/class/nicobase.rb"
+require "#{SCRIPT_ROOT}/class/nicobase.rb"
 
 class NicoTweet < NicoBase
   def initialize
