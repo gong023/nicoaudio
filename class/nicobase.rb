@@ -14,12 +14,11 @@ require "#{SCRIPT_ROOT}/class/nicoquery.rb"
 class NicoBase
 
   def initNico
-    @nico = Niconico.new(LOGIN_MAIL, LOGIN_PASS)
-    @nico.login
+    Niconico.new(LOGIN_MAIL, LOGIN_PASS)
   end
 
   def initMysql
-    @mysql = Mysql2::Client.new(
+    Mysql2::Client.new(
       :host     => MYSQL_HOST,
       :username => MYSQL_USER,
       :password => MYSQL_PASS,

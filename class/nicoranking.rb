@@ -5,8 +5,9 @@ class NicoRanking < NicoBase
   include NicoQuery
 
   def initialize category
-    initNico
-    initMysql
+    @nico = initNico
+    @nico.login
+    @mysql  = initMysql
     @run_st = initRunSetting category
   end
 
