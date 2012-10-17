@@ -36,7 +36,7 @@ class NicoRanking < NicoBase
       begin
         threads << Thread.new(row) do |thread|
           video = @nico.video("#{row["video_id"]}")
-          open("./video/#{@run_st[:dir]}/#{today}/#{row["title"]}.mp4", "w"){|f| f.write video.get_video}
+          open("./video/#{@run_st[:dir]}/#{today}/#{row["video_id"]}.mp4", "w"){|f| f.write video.get_video}
         end
       rescue
         Logger.new("./log/fail.log", 'weekly').debug("#{today}/#{row["title"]}")

@@ -18,6 +18,8 @@ done <$WORKSPACE/audioname.txt
 
 mkdir -p $SAVE/$TYPE/$TODAY
 mv $WORKSPACE/*.mp3 $SAVE/$TYPE/$TODAY
+cd $SAVE/$TYPE/$TODAY
+rename .mp4.mp3 .mp3 *.mp3
 
 rm audioname.txt
 cd $ORIGIN
