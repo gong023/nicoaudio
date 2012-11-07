@@ -9,9 +9,8 @@ module NicoQuery
     "SELECT * FROM daily_music WHERE ctime between '#{from_date}' AND '#{to_date}'"
   end
 
-  def create_table table
-    table = 'daily_music' if table.nil?
-    "CREATE TABLE `#{table}` (
+  def create_table
+    "CREATE TABLE `daily_music` (
       `id` bigint(20) unsigned NOT NULL auto_increment,
       `video_id` varchar(30) NOT NULL,
       `title` varchar(255) NOT NULL,

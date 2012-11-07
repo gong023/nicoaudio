@@ -26,12 +26,12 @@ class NicoRanking < NicoBase
 
   def get 
     ago = 1
-    today     = Date::today
-    from_date = today - ago
+    today     = Date::today.to_s
+    from_date = (Date::today - ago).to_s
     FileUtils.mkdir_p("./video/#{@run_st[:dir]}/#{today}")
     threads = []
 
-    select = find_by_interval(@run_st[:table], from_date.to_s, today.to_s)
+    select = find_by_interval(@run_st[:table], from_date, today)
     @mysql.query(select).each do |row|
       begin
         threads << Thread.new(row) do |thread|
