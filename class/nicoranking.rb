@@ -53,13 +53,13 @@ class NicoRanking < NicoBase
     run_st = {
       'all'   => {
       :category => "",
-      :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ|MAD/,
+      :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ|IA|MAD/,
       :dir      => 'all',
       :table    => 'daily_music'
     },
       'music' => {
       :category => 'g_ent2',
-      :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ|演奏/,
+      :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ|IA|演奏/,
       :dir      => 'music',
       :table    => 'daily_music'
     }
