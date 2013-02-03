@@ -21,5 +21,5 @@ mv $WORKSPACE/*.mp3 $SAVE/$TYPE/$TODAY
 cd $SAVE/$TYPE/$TODAY
 rename .mp4.mp3 .mp3 *.mp3
 
-rm audioname.txt
+rm $WORKSPACE/audioname.txt
 cd $ORIGIN

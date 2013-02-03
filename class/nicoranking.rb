@@ -24,22 +24,29 @@ class NicoRanking < NicoBase
     end
   end
 
-  def get 
+  def get duration = nil
     ago = 1
-    today     = Date::today.to_s
-    from_date = (Date::today - ago).to_s
-    FileUtils.mkdir_p("./video/#{@run_st[:dir]}/#{today}")
-    threads = []
+    if duration.nil?
+        to_date   = Date::today.to_s
+        from_date = (Date.strptime(to_date, "%Y-%m-%d") - ago).to_s
+      else
+        duration = duration.sub(/~/, '')
+        to_date = duration.sub(/^[0-9]{4}?-[0-9]{2}?-[0-9]{2}/, '');
+        from_date = duration.sub(/[0-9]{4}?-[0-9]{2}?-[0-9]{2}$/, '');
+    end
 
-    select = find_by_interval(@run_st[:table], from_date, today)
+    threads = []
+    select = find_by_interval(@run_st[:table], from_date, to_date)
     @mysql.query(select).each do |row|
+      dir_date = row['ctime'].to_s.match(/^[0-9]{4}?-[0-9]{2}?-[0-9]{2}/).to_s
+      FileUtils.mkdir_p("./video/#{@run_st[:dir]}/#{dir_date}")
       begin
         threads << Thread.new(row) do |thread|
           video = @nico.video("#{row["video_id"]}")
-          open("./video/#{@run_st[:dir]}/#{today}/#{row["video_id"]}.mp4", "w"){|f| f.write video.get_video}
+          open("./video/#{@run_st[:dir]}/#{dir_date}/#{row["video_id"]}.mp4", "w"){|f| f.write video.get_video}
         end
       rescue
-        Logger.new("./log/fail.log", 'weekly').debug("#{today}/#{row["title"]}")
+        Logger.new("./log/fail.log", 'weekly').debug("#{dir_date}/#{row["title"]}")
         next 
       end
       #時間間隔開けないとニコ動から弾かれるようす

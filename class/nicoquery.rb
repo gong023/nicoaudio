@@ -5,7 +5,7 @@ module NicoQuery
   end
 
   def find_by_interval(table, from_date, to_date)
-    #CAUTION!! index type is range
+    #range
     "SELECT * FROM daily_music WHERE ctime between '#{from_date}' AND '#{to_date}'"
   end
 
@@ -17,7 +17,6 @@ module NicoQuery
       `ctime` timestamp NOT NULL default CURRENT_TIMESTAMP,
       PRIMARY KEY  (`id`),
       UNIQUE KEY `video_id` (`video_id`),
-      KEY `video_id_index` (`video_id`),
       KEY `ctime_index` (`ctime`)
     ) ENGINE=InnoDB AUTO_INCREMENT=923 DEFAULT CHARSET=utf8"
   end
