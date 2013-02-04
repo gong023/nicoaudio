@@ -19,10 +19,10 @@ benchmark =  Benchmark::measure {
   rescue => e
     pp e
     logger.debug("FAILED!!! #{type} / #{category} / #{e}")
-    #twitter.sendDM("FAILED!!! /type:#{type}/category:#{category}/#{Date::today.to_s}")
+    twitter.sendDM("FAILED!!! /type:#{type}/category:#{category}/#{Date::today.to_s}")
     exit
   end
 }
-#twitter.sendDM("finished /type:#{type}/category:#{category}/#{benchmark}/#{Date::today.to_s}")
+twitter.sendDM("finished /type:#{type}/category:#{category}/#{benchmark}/#{Date::today.to_s}")
 logger.debug("#{type} / #{category} /#{benchmark}")
 pp 'ok'

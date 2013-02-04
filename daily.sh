@@ -1,4 +1,9 @@
 #!/bin/bash
+cd /var/www/scripts/nicoaudio
+./nicofacade.rb --type set --category all
+./nicofacade.rb --type set --category music
+./nicofacade.rb --type get --category all
+
 ORIGIN=${pwd}
 TYPE=$1
 SAVE=$2
@@ -7,19 +12,19 @@ WORKSPACE=/root/scripts/nicoaudio/video/$TYPE/$TODAY
 
 cd $WORKSPACE
 touch audioname.txt 
-find $WORKSPACE/*.mp4 >> audioname.txt 
+find $WORKSPACE/*.mp4 >> $WORKSPACE/audioname.txt 
 chmod 777 $WORKSPACE/*.mp4
 
-MP3=".mp3"
 while read line
 do
-    ffmpeg -i "$line" -ab 128 "$line$MP3" < /dev/null
+    ffmpeg -i "$line" -ab 128 $line".mp3" < /dev/null
 done <$WORKSPACE/audioname.txt 
 
 mkdir -p $SAVE/$TYPE/$TODAY
 mv $WORKSPACE/*.mp3 $SAVE/$TYPE/$TODAY
 cd $SAVE/$TYPE/$TODAY
 rename .mp4.mp3 .mp3 *.mp3
+scp -r $SAVE/$TYPE/$TODAY aws:/var/www/html/nicoplay/public/audio/all
 
-rm $WORKSPACE/audioname.txt
+rm -fr $WORKSPACE/*
 cd $ORIGIN
