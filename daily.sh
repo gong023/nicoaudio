@@ -10,6 +10,7 @@ SAVE=$2
 TODAY=$(date '+%Y-%m-%d')
 WORKSPACE=/root/scripts/nicoaudio/video/$TYPE/$TODAY
 
+mkdir -p $WORKSPACE
 cd $WORKSPACE
 touch audioname.txt 
 find $WORKSPACE/*.mp4 >> $WORKSPACE/audioname.txt 
@@ -26,5 +27,5 @@ cd $SAVE/$TYPE/$TODAY
 rename .mp4.mp3 .mp3 *.mp3
 scp -r $SAVE/$TYPE/$TODAY aws:/var/www/html/nicoplay/public/audio/all
 
-rm -fr $WORKSPACE/*
+#rm -fr $WORKSPACE/*
 cd $ORIGIN
