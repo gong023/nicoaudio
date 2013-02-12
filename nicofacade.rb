@@ -22,6 +22,9 @@ def ParseOpt
 end
 
 args = ParseOpt()
+f = open('/etc/my/sinatra/nicoplay/env.txt')
+env = f.read
+f.close
 twitter = NicoTweet.new
 logger = Logger.new("./log/#{args[:type]}/benchmark.log", 'weekly')
 nico = NicoRanking.new args[:category]
@@ -35,6 +38,6 @@ benchmark =  Benchmark::measure {
     exit!
   end
 }
-twitter.sendDM("finished /type:#{args[:type]}/category:#{args[:category]}/#{benchmark}/#{Date::today.to_s}")
+twitter.sendDM("finished #{env}/type:#{args[:type]}/category:#{args[:category]}/#{benchmark}/#{Date::today.to_s}")
 logger.debug("#{args[:type]} / #{args[:category]} /#{benchmark}")
 pp 'ok'
