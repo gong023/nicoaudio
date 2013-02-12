@@ -1,28 +1,40 @@
-#!/usr/local/bin/ruby
-
 require "/var/www/scripts/nicoaudio/class/nicobase.rb"
 require "#{SCRIPT_ROOT}/class/nicoranking.rb"
 require "#{SCRIPT_ROOT}/class/nicotweet.rb"
+require "optparse"
 
-exit() unless $*[0] == '--type'
-exit() unless $*[2] == '--category'
-type = $*[1]
-category = $*[3]
-duration = $*[5]
-exit() if !duration.nil? && duration !~ /^[0-9]{4}?-[0-9]{2}?-[0-9]{2}?~[0-9]{4}?-[0-9]{2}?-[0-9]{2}?/
+def ParseOpt
+  opt = OptionParser.new
+  ret = {}
+  begin
+    opt.on("--type 'set' or 'get'") {|v| pp v;ret[:type] = v}
+    opt.on("--category 'all' or 'music'") {|v| ret[:category] = v}
+    ret[:duration] = nil
+    opt.on('--duration [YYYY-mm-dd~YYYY-mm-dd]')  do |v|
+      ret[:duration] = v if v =~ /^[0-9]{4}?-[0-9]{2}?-[0-9]{2}?~[0-9]{4}?-[0-9]{2}?-[0-9]{2}?/
+    end 
+    opt.parse!(ARGV)
+    return ret
+  rescue OptionParser::MissingArgument
+    pp 'arg error'
+    exit!
+  end
+end
+
+args = ParseOpt()
 twitter = NicoTweet.new
-logger = Logger.new("./log/#{type}/benchmark.log", 'weekly')
-nico = NicoRanking.new category
+logger = Logger.new("./log/#{args[:type]}/benchmark.log", 'weekly')
+nico = NicoRanking.new args[:category]
 benchmark =  Benchmark::measure {
   begin
-    type == 'get' ? nico.get(duration) : nico.set
+    args[:type] == 'get' ? nico.get(args[:duration]) : nico.set
   rescue => e
     pp e
-    logger.debug("FAILED!!! #{type} / #{category} / #{e}")
-    twitter.sendDM("FAILED!!! /type:#{type}/category:#{category}/#{Date::today.to_s}")
-    exit
+    logger.debug("FAILED!!! #{args[:type]} / #{args[:category]} / #{e}")
+    twitter.sendDM("FAILED!!! /type:#{args[:type]}/category:#{args[:category]}/#{Date::today.to_s}")
+    exit!
   end
 }
-twitter.sendDM("finished /type:#{type}/category:#{category}/#{benchmark}/#{Date::today.to_s}")
-logger.debug("#{type} / #{category} /#{benchmark}")
+twitter.sendDM("finished /type:#{args[:type]}/category:#{args[:category]}/#{benchmark}/#{Date::today.to_s}")
+logger.debug("#{args[:type]} / #{args[:category]} /#{benchmark}")
 pp 'ok'
