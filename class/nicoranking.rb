@@ -43,10 +43,12 @@ class NicoRanking < NicoBase
       begin
         threads << Thread.new(row) do |thread|
           video = @nico.video("#{row["video_id"]}")
-          open("./video/#{@run_st[:dir]}/#{dir_date}/#{row["video_id"]}.mp4", "w"){|f| f.write video.get_video}
+          open("./video/#{@run_st[:dir]}/#{dir_date}/#{row["video_id"]}.mp4", "w") do |f|
+            f.write video.get_video
+          end
         end
-      rescue
-        Logger.new("./log/fail.log", 'weekly').debug("#{dir_date}/#{row["title"]}")
+      rescue => e
+        Logger.new("./log/fail.log", 'weekly').debug("#{dir_date}/#{row["title"]}/#{e}")
         next 
       end
       #時間間隔開けないとニコ動から弾かれるようす

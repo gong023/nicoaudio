@@ -10,7 +10,7 @@ def ParseOpt
     opt.on("--type 'set' or 'get'") {|v| pp v;ret[:type] = v}
     opt.on("--category 'all' or 'music'") {|v| ret[:category] = v}
     ret[:duration] = nil
-    opt.on('--duration [YYYY-mm-dd~YYYY-mm-dd]')  do |v|
+    opt.on('--duration [YYYY-mm-dd~YYYY-mm-dd]') do |v|
       ret[:duration] = v if v =~ /^[0-9]{4}?-[0-9]{2}?-[0-9]{2}?~[0-9]{4}?-[0-9]{2}?-[0-9]{2}?/
     end 
     opt.parse!(ARGV)

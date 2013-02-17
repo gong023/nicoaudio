@@ -14,6 +14,11 @@ module NicoQuery
     "SELECT * FROM daily_music WHERE ctime between '#{from_date}' AND '#{to_date}'"
   end
 
+  def find_by_videoid video_id
+    #range
+    "SELECT * FROM daily_music WHERE video_id = '#{video_id}'"
+  end
+
   def update_video_state state, video_id
     "UPDATE daily_music SET state = #{state} WHERE video_id = '#{video_id}'"
   end
