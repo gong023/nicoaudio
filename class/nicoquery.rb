@@ -23,7 +23,7 @@ module NicoQuery
     "UPDATE daily_music SET state = #{state} WHERE video_id = '#{video_id}'"
   end
 
-  def create_table 
+  def create_table_daily_music
     "CREATE TABLE `daily_music` (
       `id` bigint(20) unsigned NOT NULL auto_increment,
       `video_id` varchar(30) NOT NULL,
@@ -33,6 +33,18 @@ module NicoQuery
       PRIMARY KEY  (`id`),
       UNIQUE KEY `video_id` (`video_id`),
       KEY `ctime_state_idx` (`ctime`,`state`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8"
+  end
+
+  def create_table_daily_music_queue
+    "CREATE TABLE daily_music_queue (
+     `id` bigint(20) unsigned NOT NULL auto_increment,
+     `music_video_id` varchar(30) NOT NULL,
+     `title` varchar(255) NOT NULL,
+     `ctime` timestamp NOT NULL default CURRENT_TIMESTAMP,
+      PRIMARY KEY  (`id`),
+      UNIQUE KEY `musicvideoid_idx` (`music_video_id`),
+     FOREIGN KEY(music_video_id) REFERENCES daily_music(video_id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8"
   end
 
