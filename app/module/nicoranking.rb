@@ -1,6 +1,4 @@
 # -*- encoding: utf-8 -*-
-require "#{SCRIPT_ROOT}/class/nicobase.rb"
-
 class NicoRanking < NicoBase
   include NicoQuery
 

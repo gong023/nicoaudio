@@ -1,6 +1,6 @@
-require "/var/www/scripts/nicoaudio/class/nicobase.rb"
-require "#{SCRIPT_ROOT}/class/nicoranking.rb"
-require "#{SCRIPT_ROOT}/class/nicotweet.rb"
+require "/var/www/scripts/nicoaudio/app/nicobase.rb"
+require "#{SCRIPT_ROOT}/app/module/nicoranking.rb"
+require "#{SCRIPT_ROOT}/app/module/nicotweet.rb"
 require "optparse"
 
 def ParseOpt
@@ -34,7 +34,7 @@ benchmark =  Benchmark::measure {
   rescue => e
     pp e
     logger.debug("FAILED!!! #{args[:type]} / #{args[:category]} / #{e}")
-    twitter.sendDM("FAILED!!! /type:#{args[:type]}/category:#{args[:category]}/#{Date::today.to_s}")
+    twitter.sendDM("FAILED!!! /type:#{args[:type]}/category:#{args[:category]}/#{Date::today.to_s}/#{e}")
     exit!
   end
 }

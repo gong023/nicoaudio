@@ -1,4 +1,4 @@
-require "/var/www/scripts/nicoaudio/class/nicobase.rb"
+require "/var/www/scripts/nicoaudio/app/nicobase.rb"
 require "optparse"
 
 class NicoRecovery < NicoBase

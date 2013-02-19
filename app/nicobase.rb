@@ -8,8 +8,8 @@ require 'logger'
 require 'benchmark'
 require 'twitter'
 
-require "#{Dir::pwd}/class/nicosecret.rb"
-require "#{SCRIPT_ROOT}/class/nicoquery.rb"
+require_relative "nicosecret.rb"
+require "#{SCRIPT_ROOT}/app/db/nicoquery.rb"
 
 class NicoBase
 

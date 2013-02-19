@@ -1,4 +1,3 @@
-class/nicosecret.rb
-video/
-log/
-shitagaki.md
+app/nicosecret.rb
+video/*
+log/*
