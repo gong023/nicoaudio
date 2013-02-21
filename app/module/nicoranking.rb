@@ -37,11 +37,11 @@ class NicoRanking < NicoBase
     select = find_enable_by_interval(from_date, to_date)
     @mysql.query(select).each do |row|
       dir_date = row['ctime'].to_s.match(/^[0-9]{4}?-[0-9]{2}?-[0-9]{2}/).to_s
-      FileUtils.mkdir_p("./video/#{@run_st[:dir]}/#{dir_date}")
+      FileUtils.mkdir_p("./video/#{dir_date}")
       begin
         threads << Thread.new(row) do |thread|
           video = @nico.video("#{row["video_id"]}")
-          open("./video/#{@run_st[:dir]}/#{dir_date}/#{row["video_id"]}.mp4", "w") do |f|
+          open("./video/#{dir_date}/#{row["video_id"]}.mp4", "w") do |f|
             f.write video.get_video
           end
         end
@@ -61,13 +61,11 @@ class NicoRanking < NicoBase
       'all'   => {
       :category => "",
       :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ|IA|MAD/,
-      :dir      => 'all',
       :table    => 'daily_music'
       },
       'music' => {
       :category => 'g_ent2',
       :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ|IA|演奏/,
-      :dir      => 'music',
       :table    => 'daily_music'
       }
     }

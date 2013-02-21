@@ -8,7 +8,7 @@ ORIGIN=${pwd}
 TYPE=$1
 SAVE=$2
 TODAY=$(date '+%Y-%m-%d')
-WORKSPACE=/root/scripts/nicoaudio/video/$TYPE/$TODAY
+WORKSPACE=/root/scripts/nicoaudio/video/$TODAY
 
 mkdir -p $WORKSPACE
 cd $WORKSPACE
@@ -30,5 +30,5 @@ scp -r $SAVE/$TYPE/$TODAY aws:/var/www/html/nicoplay/public/audio/all
 cd /var/www/scripts/nicoaudio
 ruby app/module/nicorecovery.rb
 
-rm -fr $WORKSPACE/*
+#rm -fr $WORKSPACE/*
 cd $ORIGIN
