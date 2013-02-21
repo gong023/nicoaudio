@@ -1,7 +1,7 @@
 #!/bin/bash
 cd /var/www/scripts/nicoaudio
-ruby ./app/script/daily.rb --type set --category all
-ruby ./app/script/daily.rb --type set --category music
+ruby ./app/script/daily.rb --type set --category all --tweet false
+ruby ./app/script/daily.rb --type set --category music --tweet false
 ruby ./app/script/daily.rb --type get --category all
 
 ORIGIN=${pwd}

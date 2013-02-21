@@ -4,11 +4,12 @@ require "#{SCRIPT_ROOT}/app/module/nicotweet.rb"
 require "optparse"
 
 def ParseOpt
-  opt = OptionParser.new
-  ret = {}
-  begin
+    opt = OptionParser.new
+    ret = {}
     opt.on("--type 'set' or 'get'") {|v| pp v;ret[:type] = v}
     opt.on("--category 'all' or 'music'") {|v| ret[:category] = v}
+    ret[:tweet] = true
+    opt.on("--tweet [boolean]", TrueClass) {|v| ret[:tweet] = v}
     ret[:duration] = nil
     opt.on('--duration [YYYY-mm-dd~YYYY-mm-dd]') do |v|
       ret[:duration] = v if v =~ /^[0-9]{4}?-[0-9]{2}?-[0-9]{2}?~[0-9]{4}?-[0-9]{2}?-[0-9]{2}?/
@@ -18,14 +19,14 @@ def ParseOpt
   rescue OptionParser::MissingArgument
     pp 'arg error'
     exit!
-  end
 end
 
 args = ParseOpt()
 f = open('/etc/my/sinatra/nicoplay/env.txt')
 env = f.read
 f.close
-twitter = NicoTweet.new
+pp args
+twitter = NicoTweet.new(args[:tweet])
 logger = Logger.new("./log/#{args[:type]}/benchmark.log", 'weekly')
 nico = NicoRanking.new args[:category]
 benchmark =  Benchmark::measure {
