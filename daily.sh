@@ -28,7 +28,7 @@ rename .mp4.mp3 .mp3 *.mp3
 scp -r $SAVE/$TYPE/$TODAY aws:/var/www/html/nicoplay/public/audio/all
 
 cd /var/www/scripts/nicoaudio
-ruby app/module/nicorecovery.rb
+ruby app/module/nicorecovery.rb -n true
 
 #rm -fr $WORKSPACE/*
 cd $ORIGIN
