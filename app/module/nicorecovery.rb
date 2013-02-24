@@ -52,7 +52,7 @@ class NicoRecovery < NicoBase
     @nico = initNico
     @nico.login
     takeList {|row, date|
-      next if row['state'] == 0
+      next if row['state'] == ENABLE
       FileUtils.mkdir_p("./video/recover/#{date[:dir]}")
       begin
         agent = @nico.video("#{row["video_id"]}")
