@@ -15,8 +15,13 @@ module NicoQuery
   end
 
   def find_by_videoid video_id
-    #range
+    # range
     "SELECT * FROM daily_music WHERE video_id = '#{video_id}'"
+  end
+
+  def find_enable_by_keyword keyword
+    # no index!!
+    "SELECT * FROM daily_music WHERE title LIKE '%#{keyword}%' AND state = 0"
   end
 
   def update_video_state state, video_id
