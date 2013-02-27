@@ -24,6 +24,10 @@ module NicoQuery
     "SELECT * FROM daily_music WHERE title LIKE '%#{keyword}%' AND state = 0"
   end
 
+  def find_enable_rand limit
+    "SELECT * FROM daily_music WHERE state = 0 ORDER BY RAND() LIMIT #{limit}"
+  end
+
   def update_video_state state, video_id
     "UPDATE daily_music SET state = #{state} WHERE video_id = '#{video_id}'"
   end
