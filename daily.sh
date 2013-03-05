@@ -1,7 +1,7 @@
 #!/bin/bash
 cd /var/www/scripts/nicoaudio
-ruby ./app/script/daily.rb --type set --category all --tweet false
-ruby ./app/script/daily.rb --type set --category music --tweet false
+ruby ./app/script/daily.rb --type set --category all --tweet_skip true
+ruby ./app/script/daily.rb --type set --category music --tweet_skip true
 ruby ./app/script/daily.rb --type get --category all
 
 ORIGIN=${pwd}
@@ -28,7 +28,7 @@ rename .mp4.mp3 .mp3 *.mp3
 scp -r $SAVE/$TYPE/$TODAY aws:/var/www/html/nicoplay/public/audio/all
 
 cd /var/www/scripts/nicoaudio
-ruby app/module/nicorecovery.rb -n true
+ruby ./app/script/recover.rb -n true
 
 #rm -fr $WORKSPACE/*
 cd $ORIGIN
