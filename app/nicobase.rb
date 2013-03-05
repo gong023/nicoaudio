@@ -9,7 +9,7 @@ require 'benchmark'
 require 'twitter'
 
 require_relative "nicosecret.rb"
-require "#{SCRIPT_ROOT}/app/db/nicoquery.rb"
+require_relative "./db/nicoquery.rb"
 
 class NicoBase
 
@@ -36,3 +36,7 @@ class NicoBase
   end
 
 end
+
+require_relative './module/nicotweet.rb'
+require_relative './module/nicoranking.rb'
+require_relative './module/nicorecovery.rb'
