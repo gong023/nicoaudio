@@ -1,5 +1,7 @@
 require "/var/www/scripts/nicoaudio/app/nicobase.rb"
 require "optparse"
+require 'logger'
+require 'benchmark'
 
 def ParseOpt
     opt = OptionParser.new
@@ -19,24 +21,25 @@ def ParseOpt
     exit!
 end
 
+def getEnv
+  IO.readlines('/etc/my/sinatra/nicoplay/env.txt')[0].chomp!
+end
+
 args = ParseOpt()
-f = open('/etc/my/sinatra/nicoplay/env.txt')
-env = f.read
-f.close
-base = NicoBase.new
-twitter = base.tweet(args[:tweet_skip])
+env  = getEnv()
+twitt  = NicoBase.new.tweet(args[:tweet_skip])
+nico   = NicoBase.new.ranking(args[:category])
 logger = Logger.new("./log/#{args[:type]}/benchmark.log", 'weekly')
-nico = base.ranking args[:category]
-benchmark =  Benchmark::measure {
+bench  = Benchmark::measure {
   begin
     args[:type] == 'get' ? nico.get(args[:duration]) : nico.set
   rescue => e
     pp e
     logger.debug("FAILED!!! #{args[:type]} / #{args[:category]} / #{e}")
-    twitter.sendDM("FAILED!!! /type:#{args[:type]}/category:#{args[:category]}/#{Date::today.to_s}/#{e}")
+    twitt.sendDM("FAILED!!! /type:#{args[:type]}/category:#{args[:category]}/#{Date::today.to_s}/#{e}")
     exit!
   end
 }
-twitter.sendDM("finished #{env}/type:#{args[:type]}/category:#{args[:category]}/#{benchmark}/#{Date::today.to_s}")
-logger.debug("#{args[:type]} / #{args[:category]} /#{benchmark}")
+twitt.sendDM("finished #{env}/type:#{args[:type]}/category:#{args[:category]}/#{bench}/#{Date::today.to_s}")
+logger.debug("#{args[:type]} / #{args[:category]} /#{bench}")
 pp 'ok'

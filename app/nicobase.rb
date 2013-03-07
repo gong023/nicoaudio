@@ -4,11 +4,9 @@ require 'mysql2'
 require 'pp'
 require 'date'
 require 'fileutils'
-require 'logger'
-require 'benchmark'
 require 'twitter'
 
-require_relative "nicosecret.rb"
+require_relative "./nicosecret.rb"
 require_relative "./db/nicoquery.rb"
 
 class NicoBase

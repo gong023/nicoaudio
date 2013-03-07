@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 class NicoBase
   def ranking category
-    NicoRanking.new category
+    Ranking.new category
   end
 
-  class NicoRanking < NicoBase
+  class Ranking < NicoBase
     include NicoQuery
 
     def initialize category
@@ -17,8 +17,7 @@ class NicoBase
     def set
       check = @run_st[:regrep] 
       @run_st[:category] = "" if @run_st[:category].nil?
-      all_rank = @nico.ranking(@run_st[:category])
-      all_rank.each do |rank|
+      @nico.ranking(@run_st[:category]).each do |rank|
         if check =~ rank.title
           title = @mysql.escape(rank.title)
           @mysql.query(create_daily(@run_st[:table], rank.id, title))
