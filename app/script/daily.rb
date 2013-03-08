@@ -8,7 +8,7 @@ def ParseOpt
     ret = {}
     opt.on("--type 'set' or 'get'"){|v| ret[:type] = v}
     opt.on("--category 'all' or 'music'"){|v| ret[:category] = v}
-    ret[:tweet_skip] = true
+    ret[:tweet_skip] = false
     opt.on("--tweet_skip [boolean]", TrueClass){|v| ret[:tweet_skip] = v}
     ret[:duration] = nil
     opt.on('--duration [YYYY-mm-dd~YYYY-mm-dd]') do |v|

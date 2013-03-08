@@ -1,6 +1,6 @@
 #!/bin/sh
 cd /var/www/scripts/nicoaudio
-ruby app/module/nicorecovery.rb -r true
+ruby ./app/script/recover.rb --reDownload true
 
 TODAY=$(date "+%Y-%m-%d")
 WORKSPACE=/root/scripts/nicoaudio/video/recover/$TODAY
@@ -20,4 +20,4 @@ rename .mp4.mp3 .mp3 *.mp3
 scp $SAVE/* aws:$SAVE
 
 cd /var/www/scripts/nicoaudio
-ruby app/module/nicorecovery.rb -e true
+ruby ./app/script/recover.rb --checkExists true
