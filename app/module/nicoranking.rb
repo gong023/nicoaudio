@@ -15,10 +15,9 @@ class NicoBase
     end
 
     def set
-      check = @run_st[:regrep] 
       @run_st[:category] = "" if @run_st[:category].nil?
       @nico.ranking(@run_st[:category]).each do |rank|
-        if check =~ rank.title
+        if @run_st[:regrep] =~ rank.title && @run_st[:abort_regrep] !~ rank.title
           title = @mysql.escape(rank.title)
           @mysql.query(create_daily(@run_st[:table], rank.id, title))
           pp "finished / #{rank.id}:#{rank.title}"
@@ -63,14 +62,16 @@ class NicoBase
     def initRunSetting category
       run_st = {
         'all'   => {
-          :category => "",
-          :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ|IA|MAD/,
-          :table    => 'daily_music'
+          :category     => "",
+          :regrep       => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ|IA|MAD/,
+          :abort_regrep => /実況/,
+          :table        => 'daily_music'
         },
         'music' => {
-          :category => 'g_ent2',
-          :regrep   => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ|IA|演奏/,
-          :table    => 'daily_music'
+          :category     => 'g_ent2',
+          :regrep       => /歌ってみた|初音ミク|GUMI|巡音ルカ|KAITO|MEIKO|鏡音リン|鏡音レン|がくぽ|IA|演奏/,
+          :abort_regrep => /実況/,
+          :table        => 'daily_music'
         }
       }
       run_st[category]
