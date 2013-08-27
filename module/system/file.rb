@@ -2,7 +2,9 @@ class System
   class File
 
     def self.create(name, &prc)
-      open(name, "w") { yield }
+      $stdout = open(name, "w")
+      puts yield
+      $stdout.flush
     end
   end
 end

@@ -7,15 +7,22 @@ class Nico
 
       def download_recently
         ranking = Nico::Ranking.recently_from_record
-        threads_fire(ranking, &download)
+        fire(ranking, &save) # cannot use threads.
       end
 
-      def download
+      def to_mp3
+        System::Directory.create_audio_by_date
+        unconverted_mp4s =  System::Find.mp4_by_date - System::Find.mp3_by_date
+        to_mp3 = System::Ffmpeg.to_mp3
+        threads_fire(unconverted_mp4s, &to_mp3)
+      end
+
+      def save
         ->(list) do
-          path = @nico.setting["system"]["video"]["save"] + list["created_at"]
+          path = System::VIDEO_ROOT + Schedule::Util.parse_to_Ymd(list["created_at"])
           System::Directory.create(path)
           prc = ->() { @nico.agent.video(list["video_id"]).get_video }
-          System::File.create(path + "#{list["video_id"]}.mp4", &prc)
+          System::File.create(path + "/#{list["video_id"]}.mp4", &prc)
         end
       end
 
@@ -28,7 +35,7 @@ class Nico
 
       private
       def fire(list, &prc)
-        list.each { |l| yield(l["video_id"]); }
+        list.each { |l| yield(l); }
       end
 
     end

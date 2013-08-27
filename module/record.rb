@@ -3,12 +3,12 @@ require "mysql2"
 class Record < Base
 
   def initialize
-    load_setting
+    setting = Base.load_setting["mysql"]
     @mysql = Mysql2::Client.new(
-      :host     => @setting["mysql"]["host"],
-      :username => @setting["mysql"]["user"],
-      :password => @setting["mysql"]["password"],
-      :database => @setting["mysql"]["database"]
+      :host     => setting["host"],
+      :username => setting["user"],
+      :password => setting["password"],
+      :database => setting["database"]
     )
   end
 

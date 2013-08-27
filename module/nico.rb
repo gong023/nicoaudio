@@ -1,15 +1,14 @@
 require "niconico"
 require "singleton"
-require "chronic"
 
 class Nico < Base
   include Singleton
   attr_reader :agent, :record_history
 
   def init
-    load_setting
+    setting = Base.load_setting["nico"]
     @record_history = Record::History.new
-    @agent = Niconico.new(@setting["nico"]["mail"], @setting["nico"]["pass"])
+    @agent = Niconico.new(setting["mail"], setting["pass"])
   end
 
   def login

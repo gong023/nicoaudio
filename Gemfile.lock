@@ -1,0 +1,16 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    chronic (0.10.0)
+    mysql2 (0.3.13)
+    niconico (1.2.0)
+    systemu (2.5.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  chronic
+  mysql2
+  niconico
+  systemu

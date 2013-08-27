@@ -21,8 +21,9 @@ class Nico
         to_recoad(rank, idx + 1)
       end
 
-      def recently_from_record from_date = Chronic.parse("24 hours ago"), to_date = Chronic.parse("now")
-        @nico.record_history.read("WHERE created_at between '#{from_date.to_s}' AND '#{to_date.to_s}'")
+      def recently_from_record
+        schedule = Schedule::Ranking.recently
+        @nico.record_history.read("WHERE created_at between '#{schedule[:from]}' AND '#{schedule[:to]}'")
       end
     end
   end

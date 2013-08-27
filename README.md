@@ -1,6 +1,6 @@
 書き直し中
 
-![](http://d3j5vwomefv46c.cloudfront.net/photos/large/756447630.jpg?1365603958)
+![](http://31.media.tumblr.com/35d5b51e557db49b7b16d3903ae8da73/tumblr_mkmgtzwogR1rmauzpo1_500.jpg)
 
 ニコニコから歌ってみたとかmp4落とす & mp3にかえるやつ
 
