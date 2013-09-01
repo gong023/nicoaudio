@@ -2,9 +2,18 @@ GEM
   remote: https://rubygems.org/
   specs:
     chronic (0.10.0)
+    faraday (0.8.8)
+      multipart-post (~> 1.2.0)
+    multi_json (1.7.9)
+    multipart-post (1.2.0)
     mysql2 (0.3.13)
     niconico (1.2.0)
+    simple_oauth (0.2.0)
     systemu (2.5.2)
+    twitter (4.8.1)
+      faraday (~> 0.8, < 0.10)
+      multi_json (~> 1.0)
+      simple_oauth (~> 0.2)
 
 PLATFORMS
   ruby
@@ -14,3 +23,4 @@ DEPENDENCIES
   mysql2
   niconico
   systemu
+  twitter

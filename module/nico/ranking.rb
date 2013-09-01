@@ -14,11 +14,11 @@ class Nico
         Filter::Music.execute(ranks)
       end
 
-      def to_recoad(rank, idx = 0)
+      def to_record(rank, idx = 0)
         return if rank.count == idx + 1
         p = {:video_id => rank[idx].keys[0], :title => rank[idx].values[0]} #need escape?
         @nico.record_history.create(p)
-        to_recoad(rank, idx + 1)
+        to_record(rank, idx + 1)
       end
 
       def recently_from_record

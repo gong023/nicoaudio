@@ -1,15 +1,12 @@
-require "benchmark"
 require_relative "./module/base.rb"
 
 def main
   begin
-#    bench = -> () do
-    music_rank = Nico::Ranking.fetch_music
-    Nico::Ranking.to_recoad(music_rank)
-    Nico::Video.download_recently()
-    Nico::Video.to_mp3
-#    end
-#    Report.new.success(&bench)
+    fetch_music, to_record, download_recently, to_mp3 =
+      Nico::Ranking.method(:fetch_music), Nico::Ranking.method(:to_record),
+      Nico::Video.method(:download_recently), Nico::Video.method(:to_mp3)
+
+    Report::Success.execute[fetch_music][to_record][download_recently][to_mp3]
   rescue => e
     pp e.message
     pp e.backtrace
