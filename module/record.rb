@@ -1,6 +1,7 @@
 require "mysql2"
 
 class Record < Base
+  attr_reader :mysql
 
   def initialize
     setting = Base.load_setting["mysql"]

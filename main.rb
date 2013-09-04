@@ -8,9 +8,7 @@ def main
 
     Report::Success.execute[fetch_music][to_record][download_recently][to_mp3]
   rescue => e
-    pp e.message
-    pp e.backtrace
-#    Report.new.fail(e)
+    Report::Fail.execute e
   end
 end
 

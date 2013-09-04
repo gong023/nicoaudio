@@ -16,14 +16,15 @@ class Nico
 
       def to_record(rank, idx = 0)
         return if rank.count == idx + 1
-        p = {:video_id => rank[idx].keys[0], :title => rank[idx].values[0]} #need escape?
+        p = { :video_id => rank[idx].keys[0], :title => rank[idx].values[0], :state => Record::History::STATE_UNDOWNLOADED }
         @nico.record_history.create(p)
         to_record(rank, idx + 1)
       end
 
       def recently_from_record
         schedule = Schedule::Ranking.recently
-        @nico.record_history.read("WHERE created_at between '#{schedule[:from]}' AND '#{schedule[:to]}'")
+        w = "WHERE state = #{Record::History::STATE_UNDOWNLOADED} AND created_at between '#{schedule[:from]}' AND '#{schedule[:to]}'"
+        @nico.record_history.read(w)
       end
     end
   end

@@ -8,6 +8,7 @@ class Nico
       def download_recently
         ranking = Nico::Ranking.recently_from_record
         fire(ranking, :save) # cannot use threads.
+        @nico.record_history.update_state_dowloaded System::Find.mp4_by_date
       end
 
       def to_mp3
