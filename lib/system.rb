@@ -1,8 +1,8 @@
 require 'systemu'
 
 class System < Base
-  VIDEO_ROOT = Base.load_setting["system"]["video"]["save"]
-  AUDIO_ROOT = Base.load_setting["system"]["audio"]["save"]
+  VIDEO_ROOT = Setting.new.load["system"]["video"]["save"]
+  AUDIO_ROOT = Setting.new.load["system"]["audio"]["save"]
 
   def self.execute cmd
     status, stdout, stderr = systemu cmd

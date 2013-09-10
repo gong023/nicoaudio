@@ -4,18 +4,19 @@ class Nico
     @nico = Nico.instance
 
     class << self
+      def nico; @nico; end
 
       def download_recently
-        ranking = Nico::Ranking.recently_from_record
+        ranking = Nico::Ranking.recently_from_record Record::History::STATE_UNDOWNLOADED
         fire(ranking, :save) # cannot use threads.
-        @nico.record_history.update_state_dowloaded System::Find.mp4_by_date
+        @nico.record_history.update_state(System::Find.mp4_by_date, Record::History::STATE_DOWNLOADED)
       end
 
       def to_mp3
-        System::Directory.create_audio_by_date
-        unconverted_mp4s =  System::Find.mp4_by_date - System::Find.mp3_by_date
+        unconverted_mp4s = Nico::Ranking.recently_from_record Record::History::STATE_DOWNLOADED
         to_mp3 = System::Ffmpeg.to_mp3
         threads_fire(unconverted_mp4s, &to_mp3)
+        @nico.record_history.update_state(System::Find.mp3_by_date, Record::History::STATE_CONVERTED)
       end
 
       def save list

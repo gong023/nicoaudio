@@ -4,7 +4,7 @@ class Record < Base
   attr_reader :mysql
 
   def initialize
-    setting = Base.load_setting["mysql"]
+    setting = Setting.new.load["mysql"]
     @mysql = Mysql2::Client.new(
       :host     => setting["host"],
       :username => setting["user"],

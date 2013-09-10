@@ -1,4 +1,4 @@
-require_relative "./module/base.rb"
+require_relative "./lib/base.rb"
 
 def main
   begin

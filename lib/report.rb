@@ -1,5 +1,5 @@
 class Report < Base
-  SETTING = Base.load_setting["report"]
+  SETTING = Setting.new.load["report"]
 end
 
 require_relative './report/twitter.rb'

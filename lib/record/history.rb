@@ -4,6 +4,7 @@ class Record
     TABLE = "history"
     STATE_UNDOWNLOADED = 0
     STATE_DOWNLOADED = 1
+    STATE_CONVERTED = 2
     attr_writer :video_id, :title, :state, :created_at, :updated_at
 
     def initialize
@@ -27,8 +28,8 @@ class Record
       @parent.execute("UPDATE #{TABLE} SET #{colum}=#{value} " + where)
     end
 
-    def update_state_dowloaded ids
-      ids.each {|id| update("state", STATE_DOWNLOADED, "WHERE video_id='#{id}'")}
+    def update_state(ids, state)
+      ids.each {|id| update("state", state, "WHERE video_id='#{id}'")}
     end
   end
 
