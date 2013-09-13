@@ -9,21 +9,21 @@ class Nico
       def download_recently
         ranking = Nico::Ranking.recently_from_record Record::History::STATE_UNDOWNLOADED
         fire(ranking, :save) # cannot use threads.
-        @nico.record_history.update_state(System::Find.mp4_by_date, Record::History::STATE_DOWNLOADED)
+        @nico.record_history.update_state(NicoSystem::Find.mp4_by_date, Record::History::STATE_DOWNLOADED)
       end
 
       def to_mp3
         unconverted_mp4s = Nico::Ranking.recently_from_record Record::History::STATE_DOWNLOADED
-        to_mp3 = System::Ffmpeg.to_mp3
+        to_mp3 = NicoSystem::Ffmpeg.to_mp3
         threads_fire(unconverted_mp4s, &to_mp3)
-        @nico.record_history.update_state(System::Find.mp3_by_date, Record::History::STATE_CONVERTED)
+        @nico.record_history.update_state(NicoSystem::Find.mp3_by_date, Record::History::STATE_CONVERTED)
       end
 
       def save list
-        path = System::VIDEO_ROOT + Schedule::Util.parse_to_Ymd(list["created_at"])
-        System::Directory.create(path)
+        path = NicoSystem::VIDEO_ROOT + Schedule::Util.parse_to_Ymd(list["created_at"])
+        NicoSystem::Directory.create(path)
         prc = ->() { @nico.agent.video(list["video_id"]).get_video }
-        System::File.create(path + "/#{list["video_id"]}.mp4", &prc)
+        NicoSystem::File.create(path + "/#{list["video_id"]}.mp4", &prc)
       end
 
       private

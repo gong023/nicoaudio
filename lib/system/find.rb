@@ -1,19 +1,19 @@
-class System
+class NicoSystem
   class Find
 
     class << self
       def mp3_by_date date = Schedule::Util.today
-        files = by_name(System::AUDIO_ROOT + date, "*.mp3")
+        files = by_name(NicoSystem::AUDIO_ROOT + date, "*.mp3")
         pick_file_without_extension(files, /\.mp3$/)
       end
 
       def mp4_by_date date = Schedule::Util.today
-        files = by_name(System::VIDEO_ROOT + date, "*.mp4")
+        files = by_name(NicoSystem::VIDEO_ROOT + date, "*.mp4")
         pick_file_without_extension(files, /\.mp4$/)
       end
 
       def by_name(dir, pattern)
-        System::execute("find #{dir} -name '#{pattern}'")
+        NicoSystem::execute("find #{dir} -name '#{pattern}'")
       end
 
       private

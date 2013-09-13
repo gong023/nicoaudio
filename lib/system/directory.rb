@@ -1,6 +1,6 @@
 require "fileutils"
 
-class System
+class NicoSystem
   class Directory
 
     class << self
@@ -9,11 +9,11 @@ class System
       end
 
       def create_video_by_date date = Schedule::Util.today
-        create System::VIDEO_ROOT + date
+        create NicoSystem::VIDEO_ROOT + date
       end
 
       def create_audio_by_date date = Schedule::Util.today
-        create System::AUDIO_ROOT + date
+        create NicoSystem::AUDIO_ROOT + date
       end
     end
   end

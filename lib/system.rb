@@ -1,6 +1,6 @@
 require 'systemu'
 
-class System < Base
+class NicoSystem < Base
   VIDEO_ROOT = Setting.new.load["system"]["video"]["save"]
   AUDIO_ROOT = Setting.new.load["system"]["audio"]["save"]
 

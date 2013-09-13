@@ -1,4 +1,4 @@
-class System
+class NicoSystem
   class File
 
     def self.create(name, &prc)
