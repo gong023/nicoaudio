@@ -14,7 +14,8 @@ class Report
     end
 
     def send_dm msg
-      msg = msg.scan(/^.{130}/)[0]
+      pp msg; return if Twitt::SETTING["skip"]
+      msg = "#{msg + Twitt::SETTING["env"]}/".scan(/^.{130}/)[0]
       Twitter.direct_message_create(Twitt::SETTING["dm_screen"], msg)
     end
   end
