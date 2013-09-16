@@ -14,28 +14,36 @@ class Nico
 
       def to_mp3
         unconverted_mp4s = Nico::Ranking.recently_from_record Record::History::STATE_DOWNLOADED
-        to_mp3 = NicoSystem::Ffmpeg.to_mp3
-        threads_fire(unconverted_mp4s, &to_mp3)
+        threads_fire(unconverted_mp4s, :convert)
         @nico.record_history.update_state(NicoSystem::Find.mp3_by_date, Record::History::STATE_CONVERTED)
       end
 
       def save list
         path = NicoSystem::VIDEO_ROOT + Schedule::Util.parse_to_Ymd(list["created_at"])
-        NicoSystem::Directory.create(path)
+        NicoSystem::Directory.create path
         prc = ->() { @nico.agent.video(list["video_id"]).get_video }
         NicoSystem::File.create(path + "/#{list["video_id"]}.mp4", &prc)
       end
 
+      def convert list
+        # create_dir
+        path = NicoSystem::AUDIO_ROOT + Schedule::Util.parse_to_Ymd(list["created_at"])
+        NicoSystem::Directory.create path
+        video_name = "#{NicoSystem::VIDEO_ROOT + Schedule::Util.today}/#{list['video_id']}.mp4"
+        audio_name = "#{NicoSystem::AUDIO_ROOT + Schedule::Util.today}/#{list['video_id']}.mp3"
+        NicoSystem::Ffmpeg.to_mp3(video_name, audio_name)
+      end
+
       private
-      def threads_fire(list, &prc)
+      def threads_fire(list, name)
         threads = []
-        list.each { |l| threads << Thread.new() { yield(l) } }
+        list.each { |l| threads << Thread.new() { self.method(name).call(l) } }
         threads.each { |t| t.join }
       end
 
       private
       def fire(list, name)
-        list.each &method(name)
+        list.each &self.method(name)
       end
 
     end
