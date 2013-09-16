@@ -26,11 +26,10 @@ class Nico
       end
 
       def convert list
-        # create_dir
-        path = NicoSystem::AUDIO_ROOT + Schedule::Util.parse_to_Ymd(list["created_at"])
-        NicoSystem::Directory.create path
-        video_name = "#{NicoSystem::VIDEO_ROOT + Schedule::Util.today}/#{list['video_id']}.mp4"
-        audio_name = "#{NicoSystem::AUDIO_ROOT + Schedule::Util.today}/#{list['video_id']}.mp3"
+        path_date = Schedule::Util.parse_to_Ymd(list["created_at"])
+        NicoSystem::Directory.create NicoSystem::AUDIO_ROOT + path_date
+        video_name = "#{NicoSystem::VIDEO_ROOT + path_date}/#{list['video_id']}.mp4"
+        audio_name = "#{NicoSystem::AUDIO_ROOT + path_date}/#{list['video_id']}.mp3"
         NicoSystem::Ffmpeg.to_mp3(video_name, audio_name)
       end
 
