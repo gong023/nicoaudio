@@ -6,7 +6,7 @@ class Nico < Base
   attr_reader :agent, :record_history
 
   def init
-    setting = Setting.new.load["nico"]
+    setting = Setting.new.nico
     @record_history = Record::History.new
     @agent = Niconico.new(setting["mail"], setting["pass"])
   end

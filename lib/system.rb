@@ -1,8 +1,8 @@
 require 'systemu'
 
 class NicoSystem < Base
-  VIDEO_ROOT = Setting.new.load["system"]["video"]["save"]
-  AUDIO_ROOT = Setting.new.load["system"]["audio"]["save"]
+  VIDEO_ROOT = Setting.new.system["video"]["save"]
+  AUDIO_ROOT = Setting.new.system["audio"]["save"]
 
   def self.execute cmd
     status, stdout, stderr = systemu cmd
