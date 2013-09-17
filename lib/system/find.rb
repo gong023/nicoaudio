@@ -2,15 +2,6 @@ class NicoSystem
   class Find
 
     class << self
-      def mp3_by_date date = Schedule::Util.today
-        files = by_name(NicoSystem::AUDIO_ROOT + date, "*.mp3")
-        pick_file_without_extension(files, /\.mp3$/)
-      end
-
-      def mp4_by_date date = Schedule::Util.today
-        files = by_name(NicoSystem::VIDEO_ROOT + date, "*.mp4")
-        pick_file_without_extension(files, /\.mp4$/)
-      end
 
       def by_name(dir, pattern)
         NicoSystem::execute("find #{dir} -name '#{pattern}'")
@@ -26,16 +17,22 @@ class NicoSystem
         systemu_str.split("\n").map! { |s| s.delete("\n") }
       end
 
-      private
-      def pick_file_without_extension(systemu_str, extension)
-        file_names = pick_file systemu_str
-        file_names.nil? ? [] : file_names.map! { |s| s.gsub!(extension, "") }
+      # define pick_file_without_extension, pick_dirfile_without_extension
+      %i(pick_file pick_dirfile).each do |method_type|
+        define_method "#{method_type}_without_extension".to_sym do |systemu_str, extension|
+          file_names = self.method(method_type).call(systemu_str)
+          file_names.nil? ? [] : file_names.map! { |s| s.gsub!(extension, "") }
+        end
       end
 
-      private
-      def pick_dirfile_without_extension(systemu_str, extension)
-        file_names = pick_dirfile systemu_str
-        file_names.nil? ? [] : file_names.map! { |s| s.gsub!(extension, "") }
+      # define mp3_by_date, mp4_by_date
+      %w(mp3 mp4).each do |method_type|
+        define_method("#{method_type}_by_date", ->(date = nil) {
+          date = Schedule::Util.today if date.nil?
+          const = (method_type == "mp3") ? NicoSystem::AUDIO_ROOT : NicoSystem::VIDEO_ROOT
+          files = by_name(const + date, "*.#{method_type}")
+          pick_file_without_extension(files, /\.#{method_type}$/)
+        })
       end
     end
   end
