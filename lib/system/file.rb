@@ -1,10 +1,11 @@
-class NicoSystem
-  class File
-
-    def self.create(name, &prc)
-      $stdout = open(name, "w")
-      puts yield
-      $stdout.flush
+module NicoMedia
+  class System
+    class File
+      def self.create(name, &prc)
+        $stdout = open(name, "w")
+        puts yield
+        $stdout.flush
+      end
     end
   end
 end

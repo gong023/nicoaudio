@@ -1,11 +1,10 @@
 require "pp"
 
-class Base
+module NicoMedia
+  require_relative "./setting"
+  require_relative "./record"
+  require_relative "./schedule"
+  require_relative "./app"
+  require_relative "./system"
+  require_relative "./report"
 end
-
-require_relative "./setting.rb"
-require_relative "./record.rb"
-require_relative "./schedule.rb"
-require_relative "./nico.rb"
-require_relative "./system.rb"
-require_relative "./report.rb"

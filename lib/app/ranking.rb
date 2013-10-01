@@ -1,9 +1,9 @@
-require_relative "./ranking/filter.rb"
+module NicoMedia
+  class App
+    require_relative "./ranking/filter"
 
-class Nico
-
-  class Ranking
-    @nico = Nico.instance
+    class Ranking
+    @nico = NicoMedia::App.instance
 
     URL = ["", "g_ent2"] # category url(general, music)
 
@@ -11,11 +11,11 @@ class Nico
       def reload
         @nico.login
         ranks = URL.inject([]) { |ranks, category| @nico.agent.ranking(category) }
-        to_record Filter::Music.execute(ranks)
+        to_record NicoMedia::App::Ranking::Filter::Music.execute(ranks)
       end
 
       def recently_from_record state
-        schedule = Schedule::Ranking.recently
+        schedule = NicoMedia::Schedule::Ranking.recently
         w = "WHERE state = #{state} AND created_at between '#{schedule[:from]}' AND '#{schedule[:to]}'"
         @nico.record_history.read(w)
       end
@@ -23,12 +23,11 @@ class Nico
       private
       def to_record(rank, idx = 0)
         return if rank.count == idx + 1
-        p = { video_id: rank[idx].keys[0], title: rank[idx].values[0], state: Record::History::STATE_UNDOWNLOADED }
+        p = { video_id: rank[idx].keys[0], title: rank[idx].values[0], state: NicoMedia::Record::History::STATE_UNDOWNLOADED }
         @nico.record_history.create(p)
         to_record(rank, idx + 1)
       end
-
+    end
     end
   end
-
 end
