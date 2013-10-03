@@ -3,7 +3,7 @@ module NicoMedia
     class Find
       class << self
         def by_name(dir, pattern)
-          NicoMedia::System::execute("find #{dir} -name '#{pattern}'")
+          System::execute("find #{dir} -name '#{pattern}'")
         end
 
         private
@@ -27,8 +27,8 @@ module NicoMedia
         # define mp3_by_date, mp4_by_date
         %w(mp3 mp4).each do |method_type|
           define_method("#{method_type}_by_date", ->(date = nil) {
-            date = NicoMedia::Schedule::Util.today if date.nil?
-            const = (method_type == "mp3") ? NicoMedia::System::AUDIO_ROOT : NicoMedia::System::VIDEO_ROOT
+            date = Schedule::Util.today if date.nil?
+            const = (method_type == "mp3") ? AUDIO_ROOT : VIDEO_ROOT
             files = by_name(const + date, "*.#{method_type}")
             pick_file_without_extension(files, /\.#{method_type}$/)
           })

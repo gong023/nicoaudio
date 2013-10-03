@@ -1,8 +1,6 @@
 require "yaml"
-
 module NicoMedia
   class Setting
-
     def initialize
       @file = File.dirname(__FILE__) + "/../setting.yaml"
     end

@@ -5,7 +5,7 @@ module NicoMedia
     attr_reader :mysql
 
     def initialize
-      setting = NicoMedia::Setting.new.mysql
+      setting = Setting.new.mysql
       @mysql = Mysql2::Client.new(
         :host     => setting["host"],
         :username => setting["user"],

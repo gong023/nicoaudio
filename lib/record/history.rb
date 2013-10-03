@@ -5,10 +5,9 @@ module NicoMedia
       STATE_UNDOWNLOADED = 0
       STATE_DOWNLOADED = 1
       STATE_CONVERTED = 2
-      attr_writer :video_id, :title, :state, :created_at, :updated_at
 
       def initialize
-        @parent = NicoMedia::Record.new
+        @parent = Record.new
       end
 
       def create param

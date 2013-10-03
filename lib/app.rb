@@ -7,8 +7,8 @@ module NicoMedia
     attr_reader :agent, :record_history
 
     def init
-      setting = NicoMedia::Setting.new.nico
-      @record_history = NicoMedia::Record::History.new
+      setting = Setting.new.nico
+      @record_history = Record::History.new
       @agent = Niconico.new(setting["mail"], setting["pass"])
     end
 

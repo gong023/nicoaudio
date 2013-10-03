@@ -1,6 +1,6 @@
 module NicoMedia
   class Report
-    SETTING = NicoMedia::Setting.new.report
+    SETTING = Setting.new.report
   end
   require_relative './report/log'
   require_relative './report/twitter'

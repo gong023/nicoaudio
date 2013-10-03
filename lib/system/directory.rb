@@ -7,12 +7,12 @@ module NicoMedia
           FileUtils.mkdir_p path
         end
 
-        def create_video_by_date date = NicoMedia::Schedule::Util.today
-          create NicoMedia::System::VIDEO_ROOT + date
+        def create_video_by_date date = Schedule::Util.today
+          create VIDEO_ROOT + date
         end
 
-        def create_audio_by_date date = NicoMedia::Schedule::Util.today
-          create NicoMedia::System::AUDIO_ROOT + date
+        def create_audio_by_date date = Schedule::Util.today
+          create AUDIO_ROOT + date
         end
       end
     end
