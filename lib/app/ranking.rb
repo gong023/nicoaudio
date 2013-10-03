@@ -1,9 +1,9 @@
-require_relative "./ranking/filter.rb"
+module NicoMedia
+  class App
+    require_relative "./ranking/filter"
 
-class Nico
-
-  class Ranking
-    @nico = Nico.instance
+    class Ranking
+    @nico = App.instance
 
     URL = ["", "g_ent2"] # category url(general, music)
 
@@ -11,7 +11,7 @@ class Nico
       def reload
         @nico.login
         ranks = URL.inject([]) { |ranks, category| @nico.agent.ranking(category) }
-        to_record Filter::Music.execute(ranks)
+        to_record Filter_Music.detect(ranks)
       end
 
       def recently_from_record state
@@ -27,8 +27,7 @@ class Nico
         @nico.record_history.create(p)
         to_record(rank, idx + 1)
       end
-
+    end
     end
   end
-
 end
