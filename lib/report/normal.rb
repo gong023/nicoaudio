@@ -1,7 +1,7 @@
 require 'benchmark'
 module NicoMedia
   class Report
-    class Success
+    class Normal
       def self.execute
         ->(download_recently, to_mp3) do
           bench_download = Benchmark::measure { download_recently.call }.to_a.pop

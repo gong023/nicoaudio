@@ -4,6 +4,6 @@ module NicoMedia
   end
   require_relative './report/log'
   require_relative './report/twitter'
-  require_relative './report/success'
-  require_relative './report/fail'
+  require_relative './report/normal'
+  require_relative './report/abnormal'
 end
