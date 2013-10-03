@@ -1,7 +1,8 @@
 require "chronic"
 
-class Schedule
+module NicoMedia
+  class Schedule
+  end
+  require_relative './schedule/util'
+  require_relative './schedule/ranking'
 end
-
-require_relative './schedule/util.rb'
-require_relative './schedule/ranking.rb'

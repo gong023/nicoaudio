@@ -1,17 +1,19 @@
 require 'systemu'
 
-class NicoSystem < Base
-  VIDEO_ROOT = Setting.new.system["video"]["save"]
-  AUDIO_ROOT = Setting.new.system["audio"]["save"]
+module NicoMedia
+  class System
+    VIDEO_ROOT = Setting.new.system["video"]["save"]
+    AUDIO_ROOT = Setting.new.system["audio"]["save"]
 
-  def self.execute cmd
-    status, stdout, stderr = systemu cmd
-    raise stderr if ! stderr.empty? || ! status.success?
-    stdout
+    def self.execute cmd
+      status, stdout, stderr = systemu cmd
+      raise stderr if ! stderr.empty? || ! status.success?
+      stdout
+    end
   end
+  require_relative "./system/file"
+  require_relative "./system/directory"
+  require_relative "./system/ffmpeg"
+  require_relative "./system/find"
 end
 
-require_relative "./system/file.rb"
-require_relative "./system/directory.rb"
-require_relative "./system/ffmpeg.rb"
-require_relative "./system/find.rb"

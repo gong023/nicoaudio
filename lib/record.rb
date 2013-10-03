@@ -1,22 +1,23 @@
 require "mysql2"
 
-class Record < Base
-  attr_reader :mysql
+module NicoMedia
+  class Record
+    attr_reader :mysql
 
-  def initialize
-    setting = Setting.new.mysql
-    @mysql = Mysql2::Client.new(
-      :host     => setting["host"],
-      :username => setting["user"],
-      :password => setting["password"],
-      :database => setting["database"]
-    )
+    def initialize
+      setting = Setting.new.mysql
+      @mysql = Mysql2::Client.new(
+        :host     => setting["host"],
+        :username => setting["user"],
+        :password => setting["password"],
+        :database => setting["database"]
+      )
+    end
+
+    def execute query
+      @mysql.query(query)
+    end
   end
 
-  def execute query
-    @mysql.query(query)
-  end
-
+  require_relative "./record/history"
 end
-
-require_relative "./record/history.rb"
