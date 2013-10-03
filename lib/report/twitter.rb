@@ -18,9 +18,17 @@ module NicoMedia
           pp msg
           return
         end
-        msg = "#{SETTING["env"] + " " + msg.to_s}".scan(/^.{0,130}/)[0]
+        msg = optimaze("[#{SETTING["env"]}]  #{msg.to_s}")
         Twitter.direct_message_create(SETTING["dm_screen"], msg)
       end
+
+      def optimaze msg
+        msg.encode("UTF-16BE",
+                   invalid: :replace,
+                   undef: :replace,
+                   replace: '?').encode("UTF-8").scan(/^.{0,130}/)[0]
+      end
+
     end
   end
 end

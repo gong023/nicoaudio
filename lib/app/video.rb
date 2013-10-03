@@ -16,18 +16,14 @@ module NicoMedia
         end
 
         def save list
-          path = System::VIDEO_ROOT + Schedule::Util.parse_to_Ymd(list["created_at"])
-          System::Directory.create path
+          path_date = Schedule::Util.parse_to_Ymd(list["created_at"])
           prc = ->() { @nico.agent.video(list["video_id"]).get_video }
-          System::File.create(path + "/#{list["video_id"]}.mp4", &prc)
+          System::File.create_mp4(list["video_id"], path_date, &prc)
         end
 
         def convert list
           path_date = Schedule::Util.parse_to_Ymd(list["created_at"])
-          System::Directory.create System::AUDIO_ROOT + path_date
-          video_name = "#{System::VIDEO_ROOT + path_date}/#{list['video_id']}.mp4"
-          audio_name = "#{System::AUDIO_ROOT + path_date}/#{list['video_id']}.mp3"
-          System::Ffmpeg.to_mp3(video_name, audio_name)
+          System::Ffmpeg.to_mp3(list['video_id'], path_date)
         end
 
         private
