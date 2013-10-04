@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require_relative "../lib/base"
+require_relative "../lib/nicomedia"
 include NicoMedia
-NicoMedia::App.instance.hourly_task
+App.new.hourly
