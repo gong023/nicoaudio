@@ -25,6 +25,7 @@ module NicoMedia
       end
 
       def update_state(ids, state)
+        state = History.const_get("STATE_#{state.upcase}")
         ids.each {|id| update("state", state, "WHERE video_id='#{id}'")}
       end
     end
