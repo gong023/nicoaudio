@@ -15,5 +15,6 @@ module NicoMedia
   require_relative "./system/directory"
   require_relative "./system/ffmpeg"
   require_relative "./system/find"
+  require_relative "./system/S3"
 end
 

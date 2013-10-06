@@ -1,14 +1,20 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    aws-sdk (1.20.0)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4, < 1.6.0)
+      uuidtools (~> 2.1)
     chronic (0.10.0)
     diff-lcs (1.2.4)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
+    json (1.7.7)
     multi_json (1.7.9)
     multipart-post (1.2.0)
     mysql2 (0.3.13)
     niconico (1.2.0)
+    nokogiri (1.5.10)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
@@ -23,11 +29,13 @@ GEM
       faraday (~> 0.8, < 0.10)
       multi_json (~> 1.0)
       simple_oauth (~> 0.2)
+    uuidtools (2.1.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  aws-sdk
   chronic
   mysql2
   niconico

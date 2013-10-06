@@ -56,11 +56,11 @@ module NicoMedia
       @record_history.read(w)
     end
 
-    def to_record(rank, idx = 0)
-      return if rank.count == idx + 1
-      p = { video_id: rank[idx].keys[0], title: rank[idx].values[0], state: Record::History::STATE_UNDOWNLOADED }
+    def to_record(list, idx = 0)
+      return if list.count == idx + 1
+      p = { video_id: list[idx].keys[0], title: list[idx].values[0], state: Record::History::STATE_UNDOWNLOADED }
       @record_history.create(p)
-      to_record(rank, idx + 1)
+      to_record(list, idx + 1)
     end
 
     def validate_file
