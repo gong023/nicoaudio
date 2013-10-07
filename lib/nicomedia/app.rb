@@ -6,8 +6,8 @@ module NicoMedia
 
     def hourly
       begin
-        to_record Agent::Ranking.filtered "music"
-        Report::Normal.execute[method(:download_recently)][method(:to_mp3)]
+        @record_history.create_new Agent::Ranking.filtered "music"
+        Report::Normal.execute[method(:download_mp4)][method(:convert_to_mp3)][method(:upload_to_s3)]
       rescue => e
         Report::Abnormal.execute e
       ensure
@@ -16,58 +16,61 @@ module NicoMedia
     end
 
     private
-    def download_recently
-      ranking = recently_from_record :undownloaded
-      fire(ranking, :save) # cannot use threads.
-      @record_history.update_state(System::Find.mp4_by_date, :downloaded)
+    def download_mp4
+      ranking = @record_history.read_recently :undownloaded
+      fire(ranking, :download) # cannot use threads.
     end
 
-    def to_mp3
-      unconverted_mp4s = recently_from_record :downloaded
+    def convert_to_mp3
+      unconverted_mp4s = @record_history.read_recently :downloaded
       threads_fire(unconverted_mp4s, :convert)
-      @record_history.update_state(System::Find.mp3_by_date, :converted)
     end
 
-    def save list
+    def upload_to_s3
+      exists_in_local = @record_history.read_recently :converted
+      exists_in_local.each {|l| p l}
+      # XXX:fixme
+      threads_fire(exists_in_local, "dummy") do |l|
+        s3 = System::S3.new
+        s3.upload_multi l["video_id"]
+        @record_history.update_state([l["video_id"]], :uploaded) if s3.exists?("#{l["video_id"]}.mp3")
+      end
+    end
+
+    def validate_file
+      today = Schedule::Util.today
+      System::Directory.create_video_by_date today
+      System::Directory.create_audio_by_date today
+      @record_history.update_state(System::Find.mp4_by_date(today), :downloaded)
+      @record_history.update_state(System::Find.mp3_by_date(today), :converted)
+    end
+
+    def download list
       path_date = Schedule::Util.parse_to_Ymd(list["created_at"])
       prc = ->() { Agent::Video.download(list["video_id"]) }
       System::File.create_mp4(list["video_id"], path_date, &prc)
+      @record_history.update_state(System::Find.mp4_by_date(path_date), :downloaded)
     end
 
     def convert list
       path_date = Schedule::Util.parse_to_Ymd(list["created_at"])
-      System::Ffmpeg.to_mp3(list['video_id'], path_date)
+      System::Ffmpeg.to_mp3(list["video_id"], path_date)
+      @record_history.update_state(System::Find.mp3_by_date(path_date), :converted)
     end
 
     def threads_fire(list, name)
       threads = []
-      list.each { |l| threads << Thread.new() { self.method(name).call(l) } }
+      # XXX:fixme
+      if block_given?
+        list.each { |l| threads << Thread.new() { yield(l) } }
+      else
+        list.each { |l| threads << Thread.new() { self.method(name).call(l) } }
+      end
       threads.each { |t| t.join }
     end
 
     def fire(list, name)
       list.each &self.method(name)
-    end
-
-    def recently_from_record state
-      state = Record::History.const_get("STATE_#{state.upcase}")
-      sch = Schedule::Ranking.recently
-      w = "WHERE state = #{state} AND created_at between '#{sch[:from]}' AND '#{sch[:to]}'"
-      @record_history.read(w)
-    end
-
-    def to_record(list, idx = 0)
-      return if list.count == idx + 1
-      p = { video_id: list[idx].keys[0], title: list[idx].values[0], state: Record::History::STATE_UNDOWNLOADED }
-      @record_history.create(p)
-      to_record(list, idx + 1)
-    end
-
-    def validate_file
-      System::Directory.create_video_by_date
-      System::Directory.create_audio_by_date
-      @record_history.update_state(System::Find.mp4_by_date, :downloaded)
-      @record_history.update_state(System::Find.mp3_by_date, :converted)
     end
 
   end

@@ -3,13 +3,15 @@ module NicoMedia
   class Report
     class Normal
       def self.execute
-        ->(download_recently, to_mp3) do
-          bench_download = Benchmark::measure { download_recently.call }.to_a.pop
+        ->(download_mp4, convert_to_mp3, upload_to_s3) do
+          bench_download = Benchmark::measure { download_mp4.call }.to_a.pop
           Log.write("video", bench_download, "success")
-          bench_tomp3 = Benchmark::measure { to_mp3.call }.to_a.pop
-          Log.write("audio", bench_tomp3, "success")
+          bench_tomp3 = Benchmark::measure { convert_to_mp3.call }.to_a.pop
+          Log.write("music", bench_tomp3, "success")
+          bench_tos3 = Benchmark::measure { upload_to_s3.call }.to_a.pop
+          Log.write("s3", bench_tos3, "success")
 
-          Twitt.new.send_dm bench_download + bench_tomp3
+          Twitt.new.send_dm "mp4:#{bench_download} / mp3:#{bench_tomp3} / s3:#{bench_tos3}"
         end.curry
       end
     end

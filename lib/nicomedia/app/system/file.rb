@@ -12,6 +12,7 @@ module NicoMedia
         puts yield
         $stdout.flush
       end
+
     end
   end
 end

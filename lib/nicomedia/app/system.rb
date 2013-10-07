@@ -7,7 +7,7 @@ module NicoMedia
 
     def self.execute cmd
       status, stdout, stderr = systemu cmd
-      raise stderr if ! stderr.empty? || ! status.success?
+      raise stderr unless status.success?
       stdout
     end
   end

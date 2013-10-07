@@ -3,8 +3,8 @@ module NicoMedia
     class Ranking
       def self.recently
         {
-          :from => Chronic.parse("24 hours ago").to_s,
-          :to   => Chronic.parse("now").to_s
+          :from => Util.parse_to_YmdHis(Chronic.parse("24 hours ago")),
+          :to   => Util.parse_to_YmdHis(Chronic.parse("now"))
         }
       end
     end
