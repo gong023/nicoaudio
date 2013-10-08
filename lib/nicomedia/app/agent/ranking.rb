@@ -6,7 +6,7 @@ module NicoMedia
 
       def self.all
         Agent.client.login
-        URL.inject([]) { |ranks, category| Agent.client.ranking(category) }
+        URL.inject([]) { |ranks, category| Agent.client.ranking category }
       end
 
       def self.filtered name
