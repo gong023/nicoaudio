@@ -1,7 +1,8 @@
 module NicoMedia
   class System
     class Ffmpeg
-      def self.to_mp3(video_id, path_date)
+      def self.exec video_id
+        path_date = Record::History.new.read_created_at video_id
         Directory.create AUDIO_ROOT + path_date
         video_name = "#{VIDEO_ROOT + path_date}/#{video_id}.mp4"
         audio_name = "#{AUDIO_ROOT + path_date}/#{video_id}.mp3"

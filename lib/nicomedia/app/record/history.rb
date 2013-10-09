@@ -2,10 +2,10 @@ module NicoMedia
   class Record
     class History
       TABLE = "history"
-      STATE_UNDOWNLOADED = 0
+      STATE_UNDOWNLOAD = 0
       STATE_DOWNLOADED = 1
-      STATE_CONVERTED = 2
-      STATE_UPLOADED = 3
+      STATE_CONVERT = 2
+      STATE_UPLOAD = 3
 
       def initialize
         @parent = Record.new
@@ -19,7 +19,7 @@ module NicoMedia
 
       def create_new(list, idx = 0)
         return if list.count == idx + 1
-        create({ video_id: list[idx].keys[0], title: list[idx].values[0], state: STATE_UNDOWNLOADED })
+        create({ video_id: list[idx].keys[0], title: list[idx].values[0], state: STATE_UNDOWNLOAD })
         create_new(list, idx + 1)
       end
 
@@ -30,7 +30,7 @@ module NicoMedia
       def read_recently state
         state = Record::History.const_get("STATE_#{state.upcase}")
         sch = Schedule::Ranking.recently
-        read "WHERE state = #{state} AND created_at between '#{sch[:from]}' AND '#{sch[:to]}' limit 1"
+        read "WHERE state = #{state} AND created_at between '#{sch[:from]}' AND '#{sch[:to]}'"
       end
 
       def read_created_at video_id
