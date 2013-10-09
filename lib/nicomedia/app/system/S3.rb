@@ -17,12 +17,12 @@ module NicoMedia
           obj.save
         end
 
-        def upload_multi video_id
+        def exec video_id
           upload "#{video_id}.mp3"
           upload "#{video_id}.mp4"
         end
 
-        def exists?(type, video_id)
+        def exist?(type, video_id)
           path_date = Record::History.new.read_created_at video_id
           extension = type == "audio" ? ".mp3" : ".mp4"
           begin

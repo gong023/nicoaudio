@@ -30,7 +30,7 @@ module NicoMedia
       def read_recently state
         state = Record::History.const_get("STATE_#{state.upcase}")
         sch = Schedule::Ranking.recently
-        read "WHERE state = #{state} AND created_at between '#{sch[:from]}' AND '#{sch[:to]}' limit 1"
+        read "WHERE state = #{state} AND created_at between '#{sch[:from]}' AND '#{sch[:to]}'"
       end
 
       def read_created_at video_id
