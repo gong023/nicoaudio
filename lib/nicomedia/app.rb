@@ -60,6 +60,7 @@ module NicoMedia
       System::Directory.create_audio_by_date today
       @record_history.update_state(System::Find.mp4_by_date(today), :downloaded)
       @record_history.update_state(System::Find.mp3_by_date(today), :converted)
+      @record_history.update_state(System::S3.find_by_date("audio", today), :uploaded)
     end
 
     def threads_fire list

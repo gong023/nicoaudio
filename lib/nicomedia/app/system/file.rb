@@ -18,7 +18,6 @@ module NicoMedia
           path = type == "audio" ? AUDIO_ROOT : VIDEO_ROOT
           extension = type == "audio" ? ".mp3" : ".mp4"
           path_date = Record::History.new.read_created_at video_id
-          pp "#{path}/#{path_date}/#{video_id}#{extension}"
           ::File.exist? "#{path}/#{path_date}/#{video_id}#{extension}"
         end
       end
