@@ -26,8 +26,7 @@ module NicoMedia
 
         # define mp3_by_date, mp4_by_date
         %w(mp3 mp4).each do |method_type|
-          define_method("#{method_type}_by_date", ->(date = nil) {
-            date = Schedule::Util.today if date.nil?
+          define_method("#{method_type}_by_date", ->(date) {
             const = (method_type == "mp3") ? AUDIO_ROOT : VIDEO_ROOT
             files = by_name(const + date, "*.#{method_type}")
             pick_file_without_extension(files, /\.#{method_type}$/)

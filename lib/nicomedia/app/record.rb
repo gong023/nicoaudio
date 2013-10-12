@@ -3,14 +3,14 @@ require "mysql2"
 module NicoMedia
   class Record
     attr_reader :mysql
+    SETTING = Setting.new.mysql
 
     def initialize
-      setting = Setting.new.mysql
       @mysql = Mysql2::Client.new(
-        :host     => setting["host"],
-        :username => setting["user"],
-        :password => setting["password"],
-        :database => setting["database"]
+        host:     SETTING["host"],
+        username: SETTING["user"],
+        password: SETTING["password"],
+        database: SETTING["database"]
       )
     end
 
