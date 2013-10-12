@@ -1,4 +1,5 @@
 require 'systemu'
+require "fileutils"
 
 module NicoMedia
   class System

@@ -1,4 +1,3 @@
-require "fileutils"
 module NicoMedia
   class System
     class Directory

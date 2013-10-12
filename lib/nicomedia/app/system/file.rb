@@ -20,6 +20,10 @@ module NicoMedia
           path_date = Record::History.new.read_created_at video_id
           ::File.exist? "#{path}/#{path_date}/#{video_id}#{extension}"
         end
+
+        def destroy(path, name)
+          FileUtils.rm("#{path}/#{name}")
+        end
       end
     end
   end

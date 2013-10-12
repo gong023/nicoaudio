@@ -2,7 +2,7 @@ require 'benchmark'
 module NicoMedia
   class Report
     class Normal
-      def self.execute
+      def self.hourly
         ->(download_mp4, convert_to_mp3, upload_to_s3) do
           bench_download = Benchmark::measure { download_mp4.call }.to_a.pop
           Log.write("video", bench_download, "success")

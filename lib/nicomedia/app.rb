@@ -9,7 +9,7 @@ module NicoMedia
     def hourly
       begin
         @record_history.create_new Agent::Ranking.filtered "music"
-        Report::Normal.execute[method(:step_video)][method(:step_audio)][method(:step_s3)]
+        Report::Normal.hourly[method(:step_video)][method(:step_audio)][method(:step_s3)]
       rescue => e
         Report::Abnormal.execute e
       ensure
@@ -61,6 +61,10 @@ module NicoMedia
       @record_history.update_state(System::Find.mp4_by_date(today), :downloaded)
       @record_history.update_state(System::Find.mp3_by_date(today), :converted)
       @record_history.update_state(System::S3.find_by_date("audio", today), :uploaded)
+      threads_fire(@record_history.read_recently(:uploaded)) do |list|
+        path_date = @record_history.read_created_at list["video_id"]
+        System::File.destroy("#{System::VIDEO_ROOT}/#{path_date}", "#{list["video_id"]}.mp4")
+      end
     end
 
     def threads_fire list

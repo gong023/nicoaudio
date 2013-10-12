@@ -1,7 +1,5 @@
-書き直し中
+ニコニコ動画のランキングから歌ってみたとか抽出してmp4落とす & mp3にかえる &s3に上げる
 
-![](https://dl.dropboxusercontent.com/u/27113412/img/38572113.jpg)
-
-ニコニコから歌ってみたとかmp4落とす & mp3にかえるやつ
+![](https://dl.dropboxusercontent.com/u/27113412/img/34626062_p12.jpg)
 
 やるったらやる
