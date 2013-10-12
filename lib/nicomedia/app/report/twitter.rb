@@ -1,11 +1,11 @@
 require "twitter"
 module NicoMedia
   class Report
-    class Twitt
+    class Twitter
       SETTING = SETTING["twitter"]
 
       def initialize
-        Twitter.configure do |config|
+        ::Twitter.configure do |config|
           config.consumer_key        = SETTING["consumer_key"]
           config.consumer_secret     = SETTING["consumer_secret"]
           config.oauth_token         = SETTING["access_token"]
@@ -19,7 +19,7 @@ module NicoMedia
           return
         end
         msg = optimaze("[#{SETTING["env"]}]  #{msg.to_s}")
-        Twitter.direct_message_create(SETTING["dm_screen"], msg)
+        ::Twitter.direct_message_create(SETTING["dm_screen"], msg)
       end
 
       def optimaze msg
