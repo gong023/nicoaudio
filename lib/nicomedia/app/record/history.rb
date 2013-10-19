@@ -48,6 +48,17 @@ module NicoMedia
         ids.each {|id| update("state", state, "WHERE video_id='#{id}'")}
       end
 
+      def within_shared_lock(id, video_id, &prc)
+        @parent.execute("begin")
+        read("where id=#{id} lock in share mode")
+        yield video_id
+        @parent.execute("commit")
+      end
+
+      def close
+        @parent.mysql.close
+      end
+
     end
   end
 end

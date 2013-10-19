@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/nicomedia"
+include NicoMedia
+App::Dump.new.all_by_rand
