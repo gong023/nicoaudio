@@ -17,7 +17,7 @@ module NicoMedia
         def exist?(type, video_id)
           path = type == "audio" ? AUDIO_ROOT : VIDEO_ROOT
           extension = type == "audio" ? ".mp3" : ".mp4"
-          path_date = Record::History.new.read_created_at video_id
+          path_date = Record::History.instance.read_created_at video_id
           ::File.exist? "#{path}/#{path_date}/#{video_id}#{extension}"
         end
 

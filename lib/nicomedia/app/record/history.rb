@@ -1,6 +1,9 @@
+require "singleton"
 module NicoMedia
   class Record
     class History
+      include Singleton
+
       TABLE = "history"
       STATE_REGISTERD = 0
       STATE_DOWNLOADED = 1

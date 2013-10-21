@@ -1,5 +1,4 @@
 require "niconico"
-require "singleton"
 module NicoMedia
   class Agent
     include Singleton

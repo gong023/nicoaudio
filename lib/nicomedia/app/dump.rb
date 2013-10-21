@@ -37,7 +37,7 @@ module NicoMedia
 
       private
       def record_history
-        @record_history ||= Record::History.new
+        @record_history ||= Record::History.instance
       end
 
       def report_interval video_id

@@ -12,7 +12,7 @@ module NicoMedia
         def upload video_id
           local_path = video_id.match(/.mp3$/) ? AUDIO_ROOT : VIDEO_ROOT
           type = video_id.match(/.mp3$/) ? "audio" : "video"
-          path_date = Record::History.new.read_created_at video_id.scan(/^.{2}\d+/)[0]
+          path_date = Record::History.instance.read_created_at video_id.scan(/^.{2}\d+/)[0]
           obj = @bucket.objects.build("#{type}/#{path_date}/#{video_id}")
           obj.content = open("#{local_path}/#{path_date}/#{video_id}")
           obj.save
@@ -24,7 +24,7 @@ module NicoMedia
         end
 
         def exist?(type, video_id)
-          path_date = Record::History.new.read_created_at video_id
+          path_date = Record::History.instance.read_created_at video_id
           extension = type == "audio" ? ".mp3" : ".mp4"
           @bucket.object("#{type}/#{path_date}/#{video_id}#{extension}").exists?
         end

@@ -1,7 +1,7 @@
 module NicoMedia
   class App
     def initialize
-      @record_history = Record::History.new
+      @record_history = Record::History.instance
       @step_count = 0
       self.class.create_step
     end
