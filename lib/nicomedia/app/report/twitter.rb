@@ -19,7 +19,11 @@ module NicoMedia
           return
         end
         msg = optimaze("[#{SETTING["env"]}]  #{msg.to_s}")
-        ::Twitter.direct_message_create(SETTING["dm_screen"], msg)
+        begin
+          ::Twitter.direct_message_create(SETTING["dm_screen"], msg)
+        rescue ::Twitter::Error::Forbidden
+          Log.write("twitter_forbidden", msg, "fail")
+        end
       end
 
       def optimaze msg

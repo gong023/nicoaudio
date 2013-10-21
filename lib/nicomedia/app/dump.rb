@@ -13,8 +13,6 @@ module NicoMedia
             break if target.count == 0
             record_history.within_shared_lock(target[0]["id"], target[0]["video_id"], &method(:single))
             report_interval target[0]["video_id"]
-            record_history.close
-            @record_history = nil
           rescue => e
             Report::Abnormal.execute e
             next # nice-catch
@@ -24,12 +22,12 @@ module NicoMedia
 
       def single video_id
         Agent::Video.exec video_id
-        record_history.update_state([video_id], :downloaded) if System::File.exist?("video", video_id)
+        record_history.update_state(video_id, :downloaded) if System::File.exist?("video", video_id)
         System::Ffmpeg.exec(video_id)
-        record_history.update_state([video_id], :converted) if System::File.exist?("audio", video_id)
+        record_history.update_state(video_id, :converted) if System::File.exist?("audio", video_id)
         System::S3.exec video_id
         if System::S3.exist?("audio", video_id)
-          record_history.update_state([video_id], :uploaded)
+          record_history.update_state(video_id, :uploaded)
           path_date = record_history.read_created_at video_id
           System::File.destroy("#{System::VIDEO_ROOT}/#{path_date}", "#{video_id}.mp4")
         end

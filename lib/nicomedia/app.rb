@@ -46,7 +46,7 @@ module NicoMedia
           target_executer.call(targets) do |list|
             video_id = list["video_id"]
             v[:client].method(:exec).call(video_id)
-            @record_history.update_state([video_id], next_state) if v[:checker].method(:exist?).call(v[:type], video_id)
+            @record_history.update_state(video_id, next_state) if v[:checker].method(:exist?).call(v[:type], video_id)
           end
           @step_count += 1
         end

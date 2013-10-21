@@ -9,6 +9,7 @@ module NicoMedia
       STATE_DOWNLOADED = 1
       STATE_CONVERTED = 2
       STATE_UPLOADED = 3
+      STATE_INVALID = 99
 
       def initialize
         @parent = Record.new
@@ -47,6 +48,7 @@ module NicoMedia
       end
 
       def update_state(ids, state)
+        ids = [ids] unless ids.kind_of?(Array)
         state = History.const_get("STATE_#{state.upcase}")
         ids.each {|id| update("state", state, "WHERE video_id='#{id}'")}
       end
