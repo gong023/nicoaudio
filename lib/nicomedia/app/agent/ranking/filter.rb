@@ -9,7 +9,7 @@ module NicoMedia
           end
         end
       end
-      require_relative "./filter/music"
+      require "filter/music"
     end
   end
 end

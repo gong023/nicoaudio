@@ -1,6 +1,6 @@
 module NicoMedia
   class Agent
-    require_relative "./ranking/filter"
+    require "ranking/filter"
     class Ranking
       URL = ["", "g_ent2"].freeze # category url(general, music)
 
