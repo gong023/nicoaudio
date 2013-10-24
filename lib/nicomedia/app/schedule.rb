@@ -3,6 +3,6 @@ require "chronic"
 module NicoMedia
   class Schedule
   end
-  require_relative './schedule/util'
-  require_relative './schedule/ranking'
+  require 'schedule/util'
+  require 'schedule/ranking'
 end

@@ -12,7 +12,7 @@ module NicoMedia
     def self.client
       Agent.instance.niconico
     end
-    require_relative "./agent/ranking"
-    require_relative "./agent/video"
+    require "agent/ranking"
+    require "agent/video"
   end
 end
