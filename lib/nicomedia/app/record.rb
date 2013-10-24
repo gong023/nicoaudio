@@ -19,5 +19,5 @@ module NicoMedia
     end
   end
 
-  require_relative "./record/history"
+  require "record/history"
 end

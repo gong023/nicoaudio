@@ -12,10 +12,10 @@ module NicoMedia
       stdout
     end
   end
-  require_relative "./system/file"
-  require_relative "./system/directory"
-  require_relative "./system/ffmpeg"
-  require_relative "./system/find"
-  require_relative "./system/S3"
+  require "system/file"
+  require "system/directory"
+  require "system/ffmpeg"
+  require "system/find"
+  require "system/S3"
 end
 
