@@ -1,4 +1,5 @@
 require "s3"
+
 module NicoMedia
   class System
     class S3

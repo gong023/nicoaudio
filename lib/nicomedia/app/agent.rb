@@ -1,7 +1,11 @@
 require "niconico"
+require "singleton"
 module NicoMedia
   class Agent
     include Singleton
+    autoload :Ranking, "agent/ranking"
+    autoload :Video,   "agent/video"
+
     attr_reader :niconico
 
     def initialize
@@ -12,7 +16,5 @@ module NicoMedia
     def self.client
       Agent.instance.niconico
     end
-    require "agent/ranking"
-    require "agent/video"
   end
 end

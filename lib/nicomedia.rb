@@ -1,12 +1,12 @@
 require "pp"
 
 module NicoMedia
-  require "setting"
-  require "record"
-  require "schedule"
-  require "system"
-  require "report"
-  require "agent"
-  require "dump"
-  require "app"
+  autoload :Setting,  "setting"
+  autoload :Record,   "record"
+  autoload :Schedule, "schedule"
+  autoload :System,   "system"
+  autoload :Report,   "report"
+  autoload :Agent,    "agent"
+  autoload :Dump,     "dump"
+  autoload :App,      "app"
 end

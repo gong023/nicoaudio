@@ -1,7 +1,8 @@
 module NicoMedia
   class Agent
-    require "ranking/filter"
     class Ranking
+      autoload :Filter, "ranking/filter"
+
       URL = ["", "g_ent2"].freeze # category url(general, music)
 
       def self.all

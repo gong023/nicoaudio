@@ -7,14 +7,12 @@ module NicoMedia
     end
 
     def hourly
-      begin
-        @record_history.create_new Agent::Ranking.filtered "music"
-        Report::Normal.hourly[method(:step_video)][method(:step_audio)][method(:step_s3)]
-      rescue => e
-        Report::Abnormal.execute e
-      ensure
-        validate_file
-      end
+      @record_history.create_new Agent::Ranking.filtered "music"
+      Report::Normal.hourly[method(:step_video)][method(:step_audio)][method(:step_s3)]
+    rescue => e
+      Report::Abnormal.execute e
+    ensure
+      validate_file
     end
 
     FILE_STATES = %i(registerd downloaded converted uploaded).freeze
