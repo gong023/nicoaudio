@@ -1,10 +1,14 @@
-require 'rspec'
+require 'spec_helper'
 
 describe NicoMedia::Report::Twitter do
+  subject { Report::Twitter.new }
 
-  it 'should do something' do
-
-    #To change this template use File | Settings | File Templates.
-    true.should == false
+  describe "#optimaze" do
+    context "with_success" do
+      it "make message less than 140" do
+        over_msg = 150.times.inject("a") {|m, n| "#{m}#{n}" }
+        expect(subject.optimaze(over_msg).size).to be < 140
+      end
+    end
   end
 end

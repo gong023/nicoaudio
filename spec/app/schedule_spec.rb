@@ -1,10 +1,15 @@
-require 'rspec'
+require 'spec_helper'
 
 describe NicoMedia::Schedule do
+  describe ":Util" do
+    it "autoloaded" do
+      expect { Schedule::Util }.not_to raise_error
+    end
+  end
 
-  it 'should do something' do
-
-    #To change this template use File | Settings | File Templates.
-    true.should == false
+  describe ":Ranking" do
+    it "autoloaded" do
+      expect { Schedule::Ranking }.not_to raise_error
+    end
   end
 end
