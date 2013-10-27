@@ -3,7 +3,7 @@ require "s3"
 module NicoMedia
   class System
     class S3
-      SETTING = Setting.new.system["S3"]
+      SETTING = Setting.system["S3"]
       @bucket = ::S3::Service.new(
           access_key_id: SETTING["access_key"],
           secret_access_key: SETTING["secret_key"]

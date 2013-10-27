@@ -9,8 +9,8 @@ module NicoMedia
     autoload :Ffmpeg,    "system/ffmpeg"
     autoload :Directory, "system/directory"
 
-    VIDEO_ROOT = Setting.new.system["video"]["save"]
-    AUDIO_ROOT = Setting.new.system["audio"]["save"]
+    VIDEO_ROOT = Setting.system["video"]["save"]
+    AUDIO_ROOT = Setting.system["audio"]["save"]
 
     def self.execute cmd
       status, stdout, stderr = systemu cmd

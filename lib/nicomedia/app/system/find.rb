@@ -6,14 +6,14 @@ module NicoMedia
           System::execute("find #{dir} -name '#{pattern}'")
         end
 
-        private
         def pick_file systemu_str
-          systemu_str.split("/").map! { |s| s.chomp! }.compact!
+          files = systemu_str.split("/").map! { |s| s.chomp! }.compact!
+          files.empty? ? nil : files
         end
 
-        private
         def pick_dirfile systemu_str
-          systemu_str.split("\n").map! { |s| s.delete("\n") }
+          dirfiles = systemu_str.split("\n").map! { |s| s.delete("\n") }
+          dirfiles == [systemu_str] ? nil : dirfiles
         end
 
         # define pick_file_without_extension, pick_dirfile_without_extension

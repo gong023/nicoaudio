@@ -2,7 +2,7 @@ require 'logger'
 module NicoMedia
   class Report
     class Log
-      ROOT = Setting.new.report["log"]["save"]
+      ROOT = Setting.report["log"]["save"]
 
       def self.write(file, msg, option_dir = nil)
         System::Directory.create "#{ROOT}/#{option_dir}/"

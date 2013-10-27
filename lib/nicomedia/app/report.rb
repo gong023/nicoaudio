@@ -5,6 +5,6 @@ module NicoMedia
     autoload :Normal,   'report/normal'
     autoload :Abnormal, 'report/abnormal'
 
-    SETTING = Setting.new.report
+    SETTING = Setting.report
   end
 end
