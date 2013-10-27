@@ -63,6 +63,8 @@ module NicoMedia
         path_date = @record_history.read_created_at list["video_id"]
         System::File.destroy("#{System::VIDEO_ROOT}/#{path_date}", "#{list["video_id"]}.mp4")
       end
+    rescue => e
+      Report::Log.write("exception", "#{e.message} / #{e.backtrace}", "fail")
     end
 
     def threads_fire list

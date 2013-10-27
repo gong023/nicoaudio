@@ -9,7 +9,7 @@ module NicoMedia
     attr_reader :niconico
 
     def initialize
-      setting = Setting.new.nico
+      setting = Setting.nico
       @niconico = Niconico.new(setting["mail"], setting["pass"])
     end
 
