@@ -33,7 +33,7 @@ describe NicoMedia::System::Find do
 
     context "with failure" do
       it "return empty array" do
-        expect(subject.pick_file("wrong string")).to be_nil
+        expect(subject.pick_file("wrong string")).to eq []
       end
     end
   end

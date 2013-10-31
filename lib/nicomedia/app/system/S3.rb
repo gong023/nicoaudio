@@ -13,9 +13,11 @@ module NicoMedia
         def upload video_id
           local_path = video_id.match(/.mp3$/) ? AUDIO_ROOT : VIDEO_ROOT
           type = video_id.match(/.mp3$/) ? "audio" : "video"
+          c_type = video_id.match(/.mp3$/) ? "audio/mpeg" : "video/mp4"
           path_date = Record::History.instance.read_created_at video_id.scan(/^.{2}\d+/)[0]
           obj = @bucket.objects.build("#{type}/#{path_date}/#{video_id}")
           obj.content = open("#{local_path}/#{path_date}/#{video_id}")
+          obj.content_type = c_type
           obj.save
         end
 
