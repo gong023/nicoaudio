@@ -14,15 +14,12 @@ module NicoMedia
           $stdout.flush
         end
 
-        def exist?(type, video_id)
-          path = type == "audio" ? AUDIO_ROOT : VIDEO_ROOT
-          extension = type == "audio" ? ".mp3" : ".mp4"
-          path_date = Record::History.instance.read_created_at video_id
-          ::File.exist? "#{path}/#{path_date}/#{video_id}#{extension}"
+        def exist? video_name
+          ::File.exist? "#{System.define_local_path(video_name)}/#{video_name}"
         end
 
-        def destroy(path, name)
-          FileUtils.rm("#{path}/#{name}")
+        def destroy video_name
+          FileUtils.rm("#{System.define_local_path(video_name)}/#{name}")
         end
       end
     end

@@ -26,7 +26,7 @@ module NicoMedia
         System::Ffmpeg.exec(video_id)
         record_history.update_state(video_id, :converted) if System::File.exist?("audio", video_id)
         System::S3.exec video_id
-        if System::S3.exist?("audio", video_id)
+        if System::S3.exist?("#{video_id}.mp3")
           record_history.update_state(video_id, :uploaded)
           path_date = record_history.read_created_at video_id
           System::File.destroy("#{System::VIDEO_ROOT}/#{path_date}", "#{video_id}.mp4")

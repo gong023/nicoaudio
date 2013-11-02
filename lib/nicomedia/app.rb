@@ -40,11 +40,12 @@ module NicoMedia
         define_method "step_#{k}" do
           next_state = FILE_STATES[@step_count + 1]
           targets = @record_history.read_recently FILE_STATES[@step_count]
+          extension = System.extension(v[:type])
           target_executer = k == :video ? method(:fire) : method(:threads_fire)
           target_executer.call(targets) do |list|
             video_id = list["video_id"]
             v[:client].method(:exec).call(video_id)
-            @record_history.update_state(video_id, next_state) if v[:checker].method(:exist?).call(v[:type], video_id)
+            @record_history.update_state(video_id, next_state) if v[:checker].method(:exist?).call("#{video_id}#{extension}")
           end
           @step_count += 1
         end
@@ -60,8 +61,7 @@ module NicoMedia
       @record_history.update_state(System::Find.mp3_by_date(today), :converted)
       @record_history.update_state(System::S3.find_by_date("audio", today), :uploaded)
       threads_fire(@record_history.read_recently(:uploaded)) do |list|
-        path_date = @record_history.read_created_at list["video_id"]
-        System::File.destroy("#{System::VIDEO_ROOT}/#{path_date}", "#{list["video_id"]}.mp4")
+        System::File.destroy("#{list["video_id"]}.mp4")
       end
     rescue => e
       Report::Log.write("exception", "#{e.message} / #{e.backtrace}", "fail")

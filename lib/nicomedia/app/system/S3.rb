@@ -10,14 +10,10 @@ module NicoMedia
       ).bucket(SETTING["bucket"])
 
       class << self
-        def upload video_id
-          local_path = video_id.match(/.mp3$/) ? AUDIO_ROOT : VIDEO_ROOT
-          type = video_id.match(/.mp3$/) ? "audio" : "video"
-          c_type = video_id.match(/.mp3$/) ? "audio/mpeg" : "video/mp4"
-          path_date = Record::History.instance.read_created_at video_id.scan(/^.{2}\d+/)[0]
-          obj = @bucket.objects.build("#{type}/#{path_date}/#{video_id}")
-          obj.content = open("#{local_path}/#{path_date}/#{video_id}")
-          obj.content_type = c_type
+        def upload video_name
+          obj = @bucket.objects.build("#{define_remote_path(video_name)}/#{video_name}")
+          obj.content = open("#{System.define_local_path(video_name)}/#{video_name}")
+          obj.content_type = define_content_type(video_name)
           obj.save
         end
 
@@ -26,17 +22,24 @@ module NicoMedia
           upload "#{video_id}.mp4"
         end
 
-        def exist?(type, video_id)
-          path_date = Record::History.instance.read_created_at video_id
-          extension = type == "audio" ? ".mp3" : ".mp4"
-          @bucket.object("#{type}/#{path_date}/#{video_id}#{extension}").exists?
+        def exist?(video_name)
+          @bucket.object("#{define_remote_path(video_name)}/#{video_name}").exists?
         end
 
         def find_by_date(type, date)
-          extension = type == "audio" ? ".mp3" : ".mp4"
           @bucket.objects.find_all(prefix: "#{type}/#{date}").map do |object|
-            object.key.gsub(/#{type}\/#{date}\//, "").gsub(/#{extension}/, "")
+            object.key.gsub(/#{type}\/#{date}\//, "").gsub(/#{System.extension(type)}/, "")
           end
+        end
+
+        private
+        def define_remote_path video_name
+          type == video_name.match(/.mp3$/) ? "audio" : "video"
+          "#{type}/#{Record::Histry.instance.read_created_at(video_name)}"
+        end
+
+        def define_content_type video_name
+          video_name.match(/.mp3$/) ? "audio/mpeg" : "video/mp4"
         end
       end
     end
