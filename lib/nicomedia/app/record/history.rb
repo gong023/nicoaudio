@@ -9,6 +9,8 @@ module NicoMedia
       STATE_DOWNLOADED = 1
       STATE_CONVERTED = 2
       STATE_UPLOADED = 3
+      STATE_UPLOADED_WITH_META = 4
+      STATE_INVALID_DATE = 98
       STATE_INVALID = 99
 
       def initialize

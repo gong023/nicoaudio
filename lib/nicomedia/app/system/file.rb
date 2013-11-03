@@ -2,14 +2,13 @@ module NicoMedia
   class System
     class File
       class << self
-        def create_mp4(name, path_date, &prc)
-          path = VIDEO_ROOT + path_date
-          Directory.create path
-          create("#{path}/#{name}.mp4", &prc)
+        def create_mp4(video_id, &prc)
+          create(System.define_local_path("#{video_id}.mp4"), "#{video_id}.mp4", &prc)
         end
 
-        def create(name, &prc)
-          $stdout = open(name, "w")
+        def create(path, name, &prc)
+          Directory.create path
+          $stdout = open("#{path}/#{name}", "w")
           puts yield
           $stdout.flush
         end
@@ -19,7 +18,7 @@ module NicoMedia
         end
 
         def destroy video_name
-          FileUtils.rm("#{System.define_local_path(video_name)}/#{name}")
+          FileUtils.rm("#{System.define_local_path(video_name)}/#{video_name}")
         end
       end
     end

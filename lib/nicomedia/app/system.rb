@@ -3,7 +3,7 @@ require "fileutils"
 
 module NicoMedia
   class System
-    autoload :S3,        "system/S3"
+    autoload :S3,        "system/aws_s3"
     autoload :File,      "system/file"
     autoload :Find,      "system/find"
     autoload :Ffmpeg,    "system/ffmpeg"

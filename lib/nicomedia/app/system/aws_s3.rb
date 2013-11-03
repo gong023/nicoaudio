@@ -17,6 +17,12 @@ module NicoMedia
           obj.save
         end
 
+        def download video_name
+          File.create(System.define_local_path(video_name), video_name) do
+            @bucket.objects.build("#{define_remote_path(video_name)}/#{video_name}").content
+          end
+        end
+
         def exec video_id
           upload "#{video_id}.mp3"
           upload "#{video_id}.mp4"
@@ -32,10 +38,9 @@ module NicoMedia
           end
         end
 
-        private
         def define_remote_path video_name
-          type == video_name.match(/.mp3$/) ? "audio" : "video"
-          "#{type}/#{Record::Histry.instance.read_created_at(video_name)}"
+          type = video_name.match(/.mp3$/) ? "audio" : "video"
+          "#{type}/#{Record::History.instance.read_created_at(video_name)}"
         end
 
         def define_content_type video_name
