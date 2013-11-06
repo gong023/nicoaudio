@@ -1,5 +1,7 @@
 module NicoMedia
   class App
+    autoload :Dump, "task/dump"
+
     def initialize
       @record_history = Record::History.instance
       @step_count = 0

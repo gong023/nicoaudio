@@ -1,6 +1,9 @@
 module NicoMedia
   class App
     class Dump
+      attr_writer :report_count
+      attr_reader :ended_ids
+
       def initialize
         @report_count = 0
         @ended_ids = Time.now.to_s
@@ -33,11 +36,6 @@ module NicoMedia
         end
       end
 
-      private
-      def record_history
-        @record_history ||= Record::History.instance
-      end
-
       def report_interval video_id
         Report::Log.write("dump", video_id)
         if @report_count % 10 == 1
@@ -47,6 +45,10 @@ module NicoMedia
           @ended_ids = "#{@ended_ids} / #{video_id}"
         end
         @report_count += 1
+      end
+
+      def record_history
+        @record_history ||= Record::History.instance
       end
     end
   end
