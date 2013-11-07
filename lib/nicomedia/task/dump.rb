@@ -1,5 +1,5 @@
 module NicoMedia
-  class App
+  class Task
     class Dump
       attr_writer :report_count
       attr_reader :ended_ids

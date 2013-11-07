@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe NicoMedia::App::Dump do
+describe NicoMedia::Task::Dump do
   subject { described_class.new }
 
   describe "#all_by_rand" do
