@@ -3,4 +3,4 @@
 $:.concat Dir.glob("lib/**/")
 require "nicomedia"
 include NicoMedia
-App.new.hourly
+Task::Hourly.get_step_by_step

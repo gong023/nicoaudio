@@ -8,5 +8,5 @@ module NicoMedia
   autoload :Report,   "report"
   autoload :Agent,    "agent"
   autoload :Dump,     "dump"
-  autoload :App,      "app"
+  autoload :Task,     "task"
 end
