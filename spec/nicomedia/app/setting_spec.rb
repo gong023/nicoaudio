@@ -10,7 +10,7 @@ describe NicoMedia::Setting do
   describe "#method_missing" do
     context "with setting exist" do
       it "load setting dynamically" do
-        expected_setting = YAML.load_file(File.dirname(__FILE__)+"/../../test_setting.yaml")
+        expected_setting = YAML.load_file(File.dirname(__FILE__)+"/../../../test_setting.yaml")
 
         expect(Setting.nico).to eq expected_setting["nico"]
         expect(Setting.mysql).to eq expected_setting["mysql"]
