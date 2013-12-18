@@ -14,10 +14,6 @@ module NicoMedia
       end
 
       def send_dm msg
-        if SETTING["skip"]
-          pp msg
-          return
-        end
         msg = optimaze("[#{SETTING["env"]}]  #{msg.to_s}")
         begin
           ::Twitter.direct_message_create(SETTING["dm_screen"], msg)

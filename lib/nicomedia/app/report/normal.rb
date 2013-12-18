@@ -11,7 +11,8 @@ module NicoMedia
           bench_tos3 = Benchmark::measure { upload_to_s3.call }.to_a.pop
           Log.write("s3", bench_tos3, "success")
 
-          Twitter.new.send_dm "mp4:#{bench_download} / mp3:#{bench_tomp3} / s3:#{bench_tos3}"
+          msg = "mp4:#{bench_download} / mp3:#{bench_tomp3} / s3:#{bench_tos3}"
+          SETTING["dry"] ? pp(msg) : Twitter.new.send_dm(msg)
         end.curry
       end
     end

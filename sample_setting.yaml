@@ -17,8 +17,8 @@ system:
   secret_key:
   bucket:
 report:
+  dry:
   twitter:
-    skip:
     env:
     consumer_key:
     consumer_secret:
