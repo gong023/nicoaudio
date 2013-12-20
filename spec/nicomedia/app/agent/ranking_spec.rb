@@ -5,17 +5,17 @@ describe NicoMedia::Agent::Ranking do
   let(:all_rank) { ["総合カテゴリランキング1位", "音楽カテゴリランキング1位"] }
 
   describe "#all" do
-    context "with not using mock" do
-      it "return concated array" do
-        all = subject.all
-        expect(all.count).to be 200
-        all.each do |rank|
-          expect(rank).to be_an_instance_of Niconico::Video
-          expect(rank.title).not_to be_nil
-          expect(rank.id).not_to be_nil
-        end
-      end
-    end
+    #context "with not using mock" do
+    #  it "return concated array" do
+    #    all = subject.all
+    #    expect(all.count).to be 200
+    #    all.each do |rank|
+    #      expect(rank).to be_an_instance_of Niconico::Video
+    #      expect(rank.title).not_to be_nil
+    #      expect(rank.id).not_to be_nil
+    #    end
+    #  end
+    #end
 
     context "with using mock" do
       before do
@@ -30,14 +30,14 @@ describe NicoMedia::Agent::Ranking do
   end
 
   describe "#filtered" do
-    context "with not using mock" do
-      it "return array of hashes" do
-        subject.filtered("music").each do |rank|
-          expect(rank).to be_an_instance_of Hash
-          expect(rank).not_to be_empty
-        end
-      end
-    end
+    #context "with not using mock" do
+    #  it "return array of hashes" do
+    #    subject.filtered("music").each do |rank|
+    #      expect(rank).to be_an_instance_of Hash
+    #      expect(rank).not_to be_empty
+    #    end
+    #  end
+    #end
 
     context "with using mock" do
       before do

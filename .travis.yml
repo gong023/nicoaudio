@@ -1,0 +1,14 @@
+language: ruby
+rvm:
+  - 1.9.3
+  - 2.0.0
+before_script:
+  - mysql -e 'create database nicoaudio_test;'
+branches:
+  only:
+    - master
+notifications:
+  emails:
+    - gon.gong.gone@gmail.com
+  on_success: always
+  on_failure: always

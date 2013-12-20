@@ -1,0 +1,28 @@
+nico:
+ mail: login@mail.com
+ pass: password
+mysql:
+ host: "localhost"
+ user: "travis"
+ password: ""
+ database: "nicoaudio_test"
+system:
+ video:
+  save: '/video/path/'
+ audio:
+  save: '/audio/path/'
+ S3:
+  access_key: 'access'
+  secret_key: 'secret'
+  bucket: 'bucket'
+report:
+  dry: false
+  twitter:
+    env: 'travis'
+    consumer_key: 'consumer'
+    consumer_secret: 'consumer_secret'
+    access_token: 'access'
+    access_secret: 'access_secret'
+    dm_screen: 'dm_screen'
+  log:
+    save: '/log/path/'
