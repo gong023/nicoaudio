@@ -9,9 +9,9 @@ describe NicoMedia::Agent::Video do
         System.stub(:define_local_path).and_return("dummy")
         Agent.should_receive(:client).and_raise(Net::HTTPClientError)
         Report::Log.should_receive(:write).once
+        Record::History.instance.should_receive(:update_state).once
       end
       it "write fail log" do
-        Record::History.instance.should_receive(:update_state).once
         expect { subject }.not_to raise_error
       end
 

@@ -8,8 +8,7 @@ describe NicoMedia::Task::Hourly do
     System::S3.stub(:exec)
     System::File.stub(:exist?).and_return(true)
     System::S3.stub(:exist?).and_return(true)
-    Record::History.stub(:read_recently)
-    Record::History.stub(:update_state)
+    Record.any_instance.stub(:execute)
   end
 
   describe "Hourly" do
