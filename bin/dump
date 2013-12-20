@@ -1,6 +1,0 @@
-#!/usr/bin/env ruby
-
-$:.concat Dir.glob("lib/**/")
-require "nicomedia"
-include NicoMedia
-Task::Dump.all_by_rand

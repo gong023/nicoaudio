@@ -1,9 +1,0 @@
-#!/usr/bin/env ruby
-
-$:.concat Dir.glob("lib/**/")
-require "nicomedia"
-include NicoMedia
-uploaded = Record::History.instance.read_recently(:uploaded).to_a.count
-converted = Record::History.instance.read_recently(:converted).to_a.count
-registerd = Record::History.instance.read_recently(:registerd).to_a.count
-Report::Twitter.new.send_dm "[24hours report] uploaded:#{uploaded} / converted:#{converted} / registerd:#{registerd}"

@@ -1,6 +1,0 @@
-#!/usr/bin/env ruby
-
-$:.concat Dir.glob("lib/**/")
-require "nicomedia"
-include NicoMedia
-Task::Hourly.get_step_by_step
