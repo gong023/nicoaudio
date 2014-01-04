@@ -4,7 +4,7 @@ module NicoMedia
       autoload :Filter, "ranking/filter"
       autoload :Filter_Music, "ranking/filter/music"
 
-      URL = ["", "g_ent2"].freeze # category url(general, music)
+      URL = ["", "g_ent2", "sing"].freeze # category url(general, music)
 
       def self.all
         URL.inject([]) { |ranks, category| ranks.concat(Agent.client.ranking(category)) }

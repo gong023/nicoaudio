@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe NicoMedia::Agent::Ranking do
   subject { described_class }
-  let(:all_rank) { ["総合カテゴリランキング1位", "音楽カテゴリランキング1位"] }
+  let(:all_rank) { ["総合カテゴリランキング1位", "音楽カテゴリランキング1位", "歌ってみたランキング1位"] }
 
   describe "#all" do
     #context "with not using mock" do
     #  it "return concated array" do
     #    all = subject.all
-    #    expect(all.count).to be 200
+    #    expect(all.count).to be 300
     #    all.each do |rank|
     #      expect(rank).to be_an_instance_of Niconico::Video
     #      expect(rank.title).not_to be_nil
@@ -21,6 +21,7 @@ describe NicoMedia::Agent::Ranking do
       before do
         Agent.client.should_receive(:ranking).with("").and_return(["総合カテゴリランキング1位"])
         Agent.client.should_receive(:ranking).with("g_ent2").and_return(["音楽カテゴリランキング1位"])
+        Agent.client.should_receive(:ranking).with("sing").and_return(["歌ってみたランキング1位"])
       end
 
       it "return concated array" do
