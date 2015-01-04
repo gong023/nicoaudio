@@ -9,8 +9,7 @@ module NicoMedia
           next_state = Task::FILE_STATES[i + 1]
           extension = media == :video ? ".mp4" : ".mp3"
           targets = @record_history.read_recently Task::FILE_STATES[i]
-          ignition = media == :video ? Task.method(:fire) : Task.method(:threads_fire)
-          ignition.call(targets) do |list|
+          Task.fire(targets) do |list|
             video_id = list["video_id"]
             executer[:client].method(:exec).call(video_id)
             @record_history.update_state(video_id, next_state) if executer[:checker].method(:exist?).call("#{video_id}#{extension}")
@@ -35,8 +34,8 @@ module NicoMedia
           @record_history.update_state(System::Find.mp4_by_date(today), :downloaded)
           @record_history.update_state(System::Find.mp3_by_date(today), :converted)
           @record_history.update_state(System::S3.find_by_date("audio", today), :uploaded)
-          Task.threads_fire(@record_history.read_recently(:uploaded)) do |list|
-            System::File.destroy("#{list["video_id"]}.mp4")
+          Task.fire(@record_history.read_recently(:uploaded)) do |list|
+            System::File.destroy("#{list["video_id"]}.mp4") if System::File.exist?("#{list["video_id"]}.mp4")
           end
         rescue => e
           Report::Log.write("exception", "#{e.message} / #{e.backtrace}", "fail")

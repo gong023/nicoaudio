@@ -1,0 +1,29 @@
+nico:
+ mail:
+ pass:
+mysql:
+ host:
+ user:
+ password:
+ database:
+ limit:
+system:
+ video:
+  save:
+ audio:
+  save:
+ S3:
+  access_key:
+  secret_key:
+  bucket:
+report:
+  twitter:
+    skip:
+    env:
+    consumer_key:
+    consumer_secret:
+    access_token:
+    access_secret:
+    dm_screen:
+  log:
+    save:

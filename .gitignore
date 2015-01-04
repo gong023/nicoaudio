@@ -1,9 +1,10 @@
 setting.yaml
 .rspec
+sprc/lor
 lors
-local_test_setting.yml
+test_setting.yaml
 .idea/
 audio/
 video/
 log/
-bin/tmp
+nicomedia_production.sql
