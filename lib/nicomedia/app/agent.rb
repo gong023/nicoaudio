@@ -1,4 +1,5 @@
-require "niconico"
+require_relative "../../../vendor/niconico/lib/niconico.rb"
+
 require "singleton"
 module NicoMedia
   class Agent

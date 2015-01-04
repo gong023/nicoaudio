@@ -1,4 +1,6 @@
 require "twitter"
+require "pp"
+
 module NicoMedia
   class Report
     class Twitter
